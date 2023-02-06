@@ -3,22 +3,19 @@ import React, { useContext, useState } from 'react';
 import { Keyboard, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import GestureRecognizer from 'react-native-swipe-gestures';
-import { WeatherContext } from '../context/Context';
-import { HomeScreenNavigationProp } from '../contracts/navigation';
-import FadeInView from './animations/FadeInView';
-import SearchBar from './common/SearchBar';
-import ForecastWeather from './ForecastWeather';
+import { WeatherContext } from '~/context/Context';
+import { HomeScreenNavigationProp } from '~/contracts/navigation';
+import { weatherTypeDto } from '~/contracts/weather';
+import FadeInView from '../animations/FadeInView';
+import SearchBar from '../common/SearchBar';
 import MainWeather from './MainWeather';
-import Sunrise from './Sunrise';
 import WeatherDetails from './WeatherDetails';
 
-export default function MainHome() {
-    const Context = useContext(WeatherContext);
+export default function MainHome({ data }: IMainHome) {
     const navigation = useNavigation<HomeScreenNavigationProp>();
-    const cityName = !Context.isLoading ? Context.data.city : '';
     const [metric, setMetric] = useState<boolean>(true);
     const [isFavorites, setIsFavorites] = useState(false);
-    const [search, setSearch] = useState(cityName);
+    const [search, setSearch] = useState<string>('');
 
     const onMetricChange = () => {
         setMetric(!metric);
@@ -28,11 +25,9 @@ export default function MainHome() {
         setIsFavorites(!isFavorites);
     };
 
-    const onSearch = async () => {
-        // await weatherRes();
+    const onSearch = async (coor) => {
         Keyboard.dismiss();
     };
-
 
     const onSwipe = (gestureName: string) => {
         // const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
@@ -51,19 +46,23 @@ export default function MainHome() {
         <GestureRecognizer style={{ flex: 1 }} onSwipe={(gestureName) => onSwipe(gestureName)}>
             <SafeAreaView style={styles.body}>
                 <View>
-                    <SearchBar value={search} onPress={onSearch} onChange={(text: string) => setSearch(text)} />
+                    <SearchBar value={search} onPress={(coor) => onSearch(coor)} onChange={(text: string) => setSearch(text)} />
                     <FadeInView initialValue={0} endValue={1} duration={500}>
                         <View>
-                            <MainWeather valueMetric={metric} onChangeMetric={onMetricChange} valueFavorites={isFavorites} onChangeFavorites={onFavoriteChange} />
-                            <WeatherDetails />
-                            <ForecastWeather />
-                            <Sunrise />
+                            <MainWeather data={data} valueMetric={metric} onChangeMetric={onMetricChange} valueFavorites={isFavorites} onChangeFavorites={onFavoriteChange} />
+                            <WeatherDetails data={data}/>
+                            {/* <ForecastWeather /> */}
+                            {/* <Sunrise /> */}
                         </View>
                     </FadeInView>
                 </View>
             </SafeAreaView>
         </GestureRecognizer>
     );
+};
+
+interface IMainHome {
+    data?: weatherTypeDto;
 }
 
 const styles = StyleSheet.create({

@@ -23,6 +23,10 @@ export default function useStorage(): IUseStorage {
         await storageManager.removeItem('favorites');
     };
 
+    const setAppConfigured = async () => {
+        await storageManager.setItem('isConfigured', true)
+    }
+
     const isConfigured = async (): Promise<boolean> => {
         const bool = await storageManager.getItem('isConfigured');
         if (!bool) {
@@ -31,7 +35,7 @@ export default function useStorage(): IUseStorage {
         return true;
     };
 
-    return { getFavorite, addToFavorite, removeFavorite, removeAllFavorites, isConfigured };
+    return { getFavorite, addToFavorite, removeFavorite, removeAllFavorites, isConfigured, setAppConfigured };
 }
 
 interface IUseStorage {
@@ -40,4 +44,5 @@ interface IUseStorage {
     removeFavorite: (favorites: number[], id: number) => Promise<void>;
     removeAllFavorites: () => Promise<void>;
     isConfigured: () => Promise<boolean>;
+    setAppConfigured: () => Promise<void>;
 }

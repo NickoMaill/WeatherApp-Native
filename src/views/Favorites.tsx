@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { SafeAreaView, Text, View } from 'react-native';
-import FavoriteCard from '../components/FavoriteCard';
-import { WeatherContext } from '../context/Context';
-import { getWeather } from '../utils/weatherRequest';
+import FavoriteCard from '~/components/favorites/FavoriteCard';
+import { WeatherContext } from '~/context/Context';
+import { getWeather } from '~/utils/weatherRequest';
 import Spinner from 'react-native-spinkit';
 import { useNavigation } from '@react-navigation/native';
-import TranslateView from '../components/animations/TranslateView';
-import useStorage from '../hooks/useStorage';
+import TranslateView from '~/components/animations/TranslateView';
+import useStorage from '~/hooks/useStorage';
 
 export default function Favorites() {
     const navigation = useNavigation();
@@ -71,7 +71,14 @@ export default function Favorites() {
                             if (favorites.includes(fav.city.name)) {
                                 return (
                                     <TranslateView initialValue={500} endValue={0} duration={500}>
-                                        <FavoriteCard key={i} loading={isLoading} data={fav} index={i} onCrossPress={() => deleteFavorite(fav.city.name)} onPressButton={() => getFullData(fav.city.name)} />
+                                        <FavoriteCard
+                                            key={i}
+                                            loading={isLoading}
+                                            data={fav}
+                                            index={i}
+                                            onCrossPress={() => deleteFavorite(fav.city.name)}
+                                            onPressButton={() => getFullData(fav.city.name)}
+                                        />
                                     </TranslateView>
                                 );
                             }

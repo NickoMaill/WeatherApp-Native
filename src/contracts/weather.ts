@@ -2,10 +2,59 @@ export type weatherRequestApi = {
     city?: string;
     units?: string | 'celsius' | 'metric';
     days?: number;
-    lang?: string | 'fr' | 'eng' | 'af' | 'al' | 'ar' | 'az' | 'bg' | 'ca' | 'cz' | 'da' | 'de' | 'el' | 'en' | 'eu' | 'fa' | 'fi' | 'fr' | 'gl' | 'he' | 'hi' | 'hr' | 'hu' | 'id' | 'it' | 'ja' | 'kr' | 'la' | 'lt' | 'mk' | 'no' | 'nl' | 'pl' | 'pt' | 'pt_br' | 'ro' | 'ru' | 'sv' | 'sk' | 'sl' | 'sp' | 'sr' | 'th' | 'tr' | 'ua' | 'vi' | 'zh_cn' | 'zh_tw' | 'zu';
+    lang?:
+        | string
+        | 'fr'
+        | 'eng'
+        | 'af'
+        | 'al'
+        | 'ar'
+        | 'az'
+        | 'bg'
+        | 'ca'
+        | 'cz'
+        | 'da'
+        | 'de'
+        | 'el'
+        | 'en'
+        | 'eu'
+        | 'fa'
+        | 'fi'
+        | 'fr'
+        | 'gl'
+        | 'he'
+        | 'hi'
+        | 'hr'
+        | 'hu'
+        | 'id'
+        | 'it'
+        | 'ja'
+        | 'kr'
+        | 'la'
+        | 'lt'
+        | 'mk'
+        | 'no'
+        | 'nl'
+        | 'pl'
+        | 'pt'
+        | 'pt_br'
+        | 'ro'
+        | 'ru'
+        | 'sv'
+        | 'sk'
+        | 'sl'
+        | 'sp'
+        | 'sr'
+        | 'th'
+        | 'tr'
+        | 'ua'
+        | 'vi'
+        | 'zh_cn'
+        | 'zh_tw'
+        | 'zu';
 };
 
-export type weatherResponseApi = {
+export type weatherForecastResponseApi = {
     cod: string;
     message: number;
     cnt: number;
@@ -62,6 +111,43 @@ type weatherDetailsApi = {
     icon: string;
 };
 
+export type WeatherCurrentResponseApi = {
+    coord: {
+        lon: number;
+        lat: number;
+    };
+    weather: weatherDetailsApi[];
+    base: string;
+    main: {
+        temp: number;
+        feels_like: number;
+        temp_min: number;
+        temp_max: number;
+        pressure: number;
+        humidity: number;
+    };
+    visibility: number;
+    wind: {
+        speed: number;
+        deg: number;
+    };
+    clouds: {
+        all: number;
+    };
+    dt: number;
+    sys: {
+        type: number;
+        id: number;
+        country: string;
+        sunrise: number;
+        sunset: number;
+    };
+    timezone: number;
+    id: number;
+    name: string;
+    cod: number;
+};
+
 export type weatherTypeDto = {
     cod: string;
     city: string;
@@ -76,7 +162,7 @@ export type weatherTypeDto = {
     sunset: number;
     speed: number;
     cityId: number;
-    forecastWeather: forecastWeatherDto[];
+    forecastWeather?: forecastWeatherDto[];
 };
 
 export type forecastWeatherDto = {

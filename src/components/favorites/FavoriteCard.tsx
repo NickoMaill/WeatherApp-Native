@@ -1,9 +1,9 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Spinner from 'react-native-spinkit';
-import { regularStyle } from '../styles/regularStyle';
-import { displayPic } from '../utils/displayWeatherPic';
-import Title from './common/Title';
+import { regularStyle } from '../../styles/regularStyle';
+import { displayPic } from '../../utils/displayWeatherPic';
+import Title from '../common/Title';
 
 export default function FavoriteCard({ data, index, onCrossPress, loading, onPressButton }: IFavoriteCard) {
     const color = ['#00A8F4', '#CDDC39', '#607D8A', '#00A8F4', '#673AB6', '#ed9c10', '#ed577d', '#3f3c1a'];
@@ -27,7 +27,7 @@ export default function FavoriteCard({ data, index, onCrossPress, loading, onPre
                     <Spinner color="#fff" type="CircleFlip" size={40} />
                 ) : (
                     <TouchableOpacity onPress={onCrossPress}>
-                        <Image style={styles.closeCross} source={require('../assets/icons/cross.png')} />
+                        <Image style={styles.closeCross} source={require('../../assets/icons/cross.png')} />
                     </TouchableOpacity>
                 )}
             </View>

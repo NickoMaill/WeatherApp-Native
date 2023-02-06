@@ -1,14 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { Image, StyleSheet, Switch, Text, View } from 'react-native';
-import { WeatherContext } from '../context/Context';
-import { regularStyle } from '../styles/regularStyle';
-import { displayPic } from '../utils/displayWeatherPic';
-import Title from './common/Title';
+import { WeatherContext } from '~/context/Context';
+import { weatherTypeDto } from '~/contracts/weather';
+import { regularStyle } from '~/styles/regularStyle';
+import { displayPic } from '~/utils/displayWeatherPic';
+import Title from '../common/Title';
 
-export default function MainWeather({ valueMetric, onChangeMetric, valueFavorites, onChangeFavorites }: IMainWeather) {
-    const Context = useContext(WeatherContext);
-    const data = Context.data;
-
+export default function MainWeather({ valueMetric, onChangeMetric, valueFavorites, onChangeFavorites, data }: IMainWeather) {
     return (
         <View>
             <View style={styles.centerItem}>
@@ -18,7 +16,10 @@ export default function MainWeather({ valueMetric, onChangeMetric, valueFavorite
             </View>
             <View style={[styles.centerItem, styles.titleContainer]}>
                 <View style={[styles.centerItem, styles.switchContainer]}>
-                    <Image source={require('../assets/icons/favorite.png')} style={[{ width: 30, height: 30, marginRight: 10 }, valueFavorites ? { tintColor: 'yellow' } : { tintColor: '#fff' }]} />
+                    <Image
+                        source={require('../../assets/icons/favorite.png')}
+                        style={[{ width: 30, height: 30, marginRight: 10 }, valueFavorites ? { tintColor: 'yellow' } : { tintColor: '#fff' }]}
+                    />
                     <Switch value={valueFavorites} onChange={onChangeFavorites} />
                 </View>
                 <View style={[styles.centerItem, styles.switchContainer]}>
@@ -45,6 +46,7 @@ interface IMainWeather {
     valueFavorites: boolean;
     onChangeMetric: () => void;
     onChangeFavorites: () => void;
+    data: weatherTypeDto;
 }
 
 const styles = StyleSheet.create({

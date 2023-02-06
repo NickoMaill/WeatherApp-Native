@@ -2,11 +2,13 @@ import { createContext } from 'react';
 import { Dispatch, SetStateAction } from 'react';
 import { weatherTypeDto } from '../contracts/weather';
 
-interface AppContextInterface {
-    data: weatherTypeDto | null;
-    setData: Dispatch<SetStateAction<weatherTypeDto>>;
+export interface AppContextInterface {
+    backgroundImage: string;
+    setBackgroundImage: Dispatch<SetStateAction<string>>;
     isLoading: boolean;
     setIsLoading: Dispatch<SetStateAction<boolean>>;
+    isConfigured: boolean;
+    setIsConfigured: Dispatch<SetStateAction<boolean>>;
     favorites: string[];
     setFavorites: Dispatch<SetStateAction<string[]>>;
 }

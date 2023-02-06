@@ -1,10 +1,10 @@
 import React from 'react';
 import { Image, Text, View } from 'react-native';
-import { ListResponseApi } from '../contracts/weather';
-import { regularStyle } from '../styles/regularStyle';
-import { frenchDays } from '../utils/convertDays';
-import { displayPic } from '../utils/displayWeatherPic';
-import Title from './common/Title';
+import { ListResponseApi } from '~/contracts/weather';
+import { regularStyle } from '~/styles/regularStyle';
+import { frenchDays } from '~/utils/convertDays';
+import { displayPic } from '~/utils/displayWeatherPic';
+import Title from '../common/Title';
 
 export default function ForecastWeatherDetails({ data }: IForecastWeatherDetails) {
     const fullDate: Date = new Date(data.dt * 1000);

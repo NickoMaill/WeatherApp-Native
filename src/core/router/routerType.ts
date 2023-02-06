@@ -7,6 +7,7 @@ declare global {
 }
 
 export type RootStackParamList = {
+    Splash
     Home;
     Favorites;
     Setup;

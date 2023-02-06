@@ -2,8 +2,8 @@ import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Image, SafeAreaView, StyleSheet, TouchableOpacity } from 'react-native';
 import { HomeScreenNavigationProp } from '../contracts/navigation';
-import { DeviceInfo } from '../constant/styleConstant';
 import navigationResources from '../resources/navigationResources';
+import configManager from '~/managers/configManager';
 
 export default function Footer() {
     const navigation = useNavigation<HomeScreenNavigationProp>();
@@ -15,7 +15,7 @@ export default function Footer() {
                     <TouchableOpacity key={i} onPress={() => navigation.navigate(navLink.to)}>
                         <Image source={navLink.iconPath} style={navLink.style} />
                     </TouchableOpacity>
-                )
+                );
             })}
         </SafeAreaView>
     );
@@ -26,6 +26,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        marginBottom: DeviceInfo.os === "android" ? 10 : 0
+        marginBottom: configManager.isAndroid() ? 60 : 0,
     },
 });

@@ -3,7 +3,7 @@ import { ImageSourcePropType, ImageStyle, StyleProp } from 'react-native';
 type FooterNavLink = {
     iconPath: ImageSourcePropType;
     style: StyleProp<ImageStyle>;
-    to: "Home" | "Favorites" | "Setup";
+    to: 'Home' | 'Favorites' | 'Setup';
 };
 
 class NavigationResources {

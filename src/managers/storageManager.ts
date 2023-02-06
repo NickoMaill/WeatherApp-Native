@@ -4,7 +4,7 @@ import { RecursiveKeyOf } from '../core/types/common';
 
 type StorageNameReference = {
     favorites;
-    isConfigured
+    isConfigured;
 };
 
 class StorageManager {

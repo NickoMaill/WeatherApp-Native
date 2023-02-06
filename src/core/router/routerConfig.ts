@@ -5,6 +5,7 @@ const linking: LinkingOptions<RootStackParamList> = {
     prefixes: ['/'],
     config: {
         screens: {
+            Splash: 'Splash',
             Home: 'Home',
             Favorites: 'Favorites',
             Setup: 'Setup',
