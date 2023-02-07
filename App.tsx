@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { ImageBackground, StatusBar, StyleSheet } from 'react-native';
 import { WeatherContext } from './src/context/Context';
 import assetsWeatherManager from './src/managers/assetsWeatherManager';
@@ -11,6 +11,7 @@ import Loader from './src/components/common/Loader';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { customToastConfig } from './src/hooks/useNotification';
 import configManager from '~/managers/configManager';
+import * as NavigationBar from 'expo-navigation-bar';
 
 export default function App() {
     const isResourcesLoaded = useCachedResources();
@@ -18,6 +19,15 @@ export default function App() {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isConfigured, setIsConfigured] = useState<boolean>(false);
     const [favorites, setFavorites] = useState<string[]>([]);
+    const [showFooter, setShowFooter] = useState<boolean>(false);
+
+    NavigationBar.addVisibilityListener(({ visibility }) => {
+        if (visibility === 'visible') {
+            setTimeout(() => {
+                NavigationBar.setVisibilityAsync('hidden');
+            }, 2000)
+        }
+    })
 
     const value: AppContextInterface = {
         backgroundImage,
@@ -28,7 +38,15 @@ export default function App() {
         setIsConfigured,
         favorites,
         setFavorites,
+        showFooter, 
+        setShowFooter
     };
+
+    useEffect(() => {
+        NavigationBar.setVisibilityAsync('hidden');
+        NavigationBar.setBackgroundColorAsync('black')
+        NavigationBar.setBorderColorAsync('black')
+    }, [])
 
     return (
         <>
@@ -58,6 +76,6 @@ const styles = StyleSheet.create({
 
     droidSafeArea: {
         flex: 1,
-        paddingTop:  configManager.isIos() ? -48 : 0
+        paddingTop:  configManager.isIos() ? -48 : 0,
     },
 });

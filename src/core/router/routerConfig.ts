@@ -6,6 +6,7 @@ const linking: LinkingOptions<RootStackParamList> = {
     config: {
         screens: {
             Splash: 'Splash',
+            Hello: 'Hello',
             Home: 'Home',
             Favorites: 'Favorites',
             Setup: 'Setup',

@@ -1,6 +1,5 @@
-import React, { useContext, useState } from 'react';
+import React from 'react';
 import { Image, StyleSheet, Switch, Text, View } from 'react-native';
-import { WeatherContext } from '~/context/Context';
 import { weatherTypeDto } from '~/contracts/weather';
 import { regularStyle } from '~/styles/regularStyle';
 import { displayPic } from '~/utils/displayWeatherPic';
@@ -30,11 +29,11 @@ export default function MainWeather({ valueMetric, onChangeMetric, valueFavorite
             </View>
             <View style={styles.mainView}>
                 <View style={styles.centerItem}>
-                    <Image style={{ tintColor: '#fff', width: 120, height: 120 }} source={displayPic(data.icon)} />
+                    <Image style={{ tintColor: '#fff', width: 60, height: 60 }} source={displayPic(data.icon)} />
                 </View>
                 <View style={styles.centerItem}>
-                    <Text style={{ color: '#fff', fontSize: 25, marginVertical: 15 }}>{data.description}</Text>
-                    <Title size={40}>{Math.round(data.temp)} °C</Title>
+                    <Text style={{ color: '#fff', fontSize: 20, marginVertical: 15 }}>{data.description}</Text>
+                    <Title size={25}>{Math.round(data.temp)} °C</Title>
                 </View>
             </View>
         </View>
@@ -89,7 +88,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     mainView: {
-        marginTop: 20,
+        marginTop: 0,
     },
     footer: {
         flexDirection: 'row',

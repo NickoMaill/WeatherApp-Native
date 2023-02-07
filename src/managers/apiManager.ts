@@ -67,7 +67,6 @@ class ApiManager {
             headers,
             body: JSON.stringify(body),
         };
-        console.log(options);
         
 
         const url = `${apiHost}/${route}`;

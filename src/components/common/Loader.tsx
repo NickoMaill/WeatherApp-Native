@@ -32,7 +32,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     loaderMessage: {
-        color: 'black',
+        color: stylesResources.color.white,
         marginTop: 30,
+        textShadowColor: '#000000',
+        textShadowRadius: 3,
+        textShadowOffset: { width: 10, height: 1 }
     },
 });

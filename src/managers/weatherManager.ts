@@ -1,6 +1,6 @@
 import { Latitude } from '~/components/common/SearchBar';
 import { weatherRequestApi, weatherForecastResponseApi, weatherTypeDto, WeatherCurrentResponseApi } from '~/contracts/weather';
-import weatherModule from '~/modules/services/weatherModule';
+import weatherModule, { WeatherParams } from '~/modules/services/weatherModule';
 
 class WeatherManager {
     public async getWeatherByCity(city: string, units: string = 'celcius', days: number = 7, lang: string = 'fr'): Promise<weatherTypeDto> {
@@ -8,8 +8,13 @@ class WeatherManager {
         return this.formatForecastData(weatherData);
     }
 
-    public async getWeatherByCityId(cityId: number) {
-        const weatherData = await weatherModule.getWeatherByCityId(cityId);
+    public async getWeatherByCityId(cityId: number, units: 'metric' | 'imperial' = 'metric', lang: 'en' | 'fr' = 'fr') {
+        const weatherParams: WeatherParams = {
+            cityId,
+            lang,
+            units,
+        };
+        const weatherData = await weatherModule.getWeatherByCityId(weatherParams);
         return this.formatForecastData(weatherData);
     }
 
@@ -18,13 +23,24 @@ class WeatherManager {
         return this.formatForecastData(weatherData);
     }
     
-    public async getCurrentWeatherByCoordinate(coordinate: Latitude) {
-        const weatherData = await weatherModule.getCurrentWeatherByCoordinate(coordinate)
+    public async getCurrentWeatherByCoordinate(coordinate: Latitude, units: 'metric' | 'imperial' = 'metric', lang: 'en' | 'fr' = 'fr') {
+        const weatherParams: WeatherParams = {
+            coordinate: coordinate,
+            lang,
+            units,
+        };
+
+        const weatherData = await weatherModule.getCurrentWeatherByCoordinate(weatherParams)
         return this.formatCurrentData(weatherData);
     }
     
-    public async getCurrentWeatherByCityId(cityId: number) {
-        const weatherData = await weatherModule.getCurrentWeatherByCityId(cityId)
+    public async getCurrentWeatherByCityId(cityId: number, units: 'metric' | 'imperial' = 'metric', lang: 'en' | 'fr' = 'fr') {
+        const weatherParams: WeatherParams = {
+            cityId,
+            lang,
+            units,
+        };
+        const weatherData = await weatherModule.getCurrentWeatherByCityId(weatherParams)
         return this.formatCurrentData(weatherData);
     }
 
