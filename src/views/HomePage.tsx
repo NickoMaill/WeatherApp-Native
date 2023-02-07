@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
-import weatherManager from '~/managers/weatherManager';
 import useStorage from '~/hooks/useStorage';
 import Loader from '~/components/common/Loader';
-import { weatherTypeDto } from '~/contracts/weather';
+import { ForecastWeatherDto, WeatherTypeDto } from '~/contracts/weather';
 import { WeatherContext } from '~/context/Context';
 import { BackHandler, StyleSheet, View } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { WeatherParams } from '~/modules/services/weatherModule';
+import { useNavigation } from '@react-navigation/native';
+import weatherService from '~/services/weatherService';
 import SearchBar, { Latitude } from '~/components/common/SearchBar';
 import useNotification from '~/hooks/useNotification';
 import GestureRecognizer from 'react-native-swipe-gestures';
@@ -21,12 +20,12 @@ export default function HomePage() {
     const Navigation = useNavigation();
     const Notification = useNotification();
     const Context = useContext(WeatherContext);
-    const [data, setData] = useState<weatherTypeDto | null>(null);
+    const [data, setData] = useState<WeatherTypeDto | null>(null);
+    const [forecastData, setForecastData] = useState<ForecastWeatherDto[] | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [units, setUnits] = useState<boolean>(true);
     const [isFavorites, setIsFavorites] = useState(false);
     const [search, setSearch] = useState<string>('');
-    const [isRefresh, setIsRefresh] = useState<boolean>(false);
 
     BackHandler.addEventListener('hardwareBackPress', () => {
         preventBackTooForward();
@@ -52,27 +51,45 @@ export default function HomePage() {
         setUnits(!units);
     };
 
-    const onFavoriteChange = () => {
+    const onFavoriteChange = (bool: boolean) => {
         setIsFavorites(!isFavorites);
+        if (bool) {
+            addToFavorite(data.cityId);
+        }
+
+        if (!bool) {
+            deleteFavorite(data.cityId);
+        }
     };
 
     const refreshCurrentWeather = async () => {
-        const favorites = await Storage.getFavorite();
-        const params: WeatherParams = {
-            cityId: favorites[0],
-            units: units ? 'metric' : 'imperial',
-        };
-        const weather = await weatherManager.getCurrentWeatherByCityId(params.cityId, params.units);
+        setIsLoading(true);
+        const chooseUnit = units ? 'metric' : 'imperial';
+
+        const weather = await weatherService.getCurrentWeatherByCityId(data.cityId, chooseUnit);
+        const forecast = await weatherService.getWeatherByCityId(data.cityId, chooseUnit);
+        setForecastData(forecast)
         setData(weather);
     };
 
     const getDefaultWeather = async () => {
         setIsLoading(true);
-        const defaultWeather = await Storage.getFavorite();
+        const defaultWeather = await Storage.getDefaultCity();
+        console.log(typeof defaultWeather)
 
-        const weather = await weatherManager.getCurrentWeatherByCityId(defaultWeather[0]);
-        setData(weather);
-        Context.setBackgroundImage(weather.icon);
+        if (!defaultWeather) {
+            await Storage.setAppConfigured(false);
+            Navigation.navigate('Hello');
+            Context.setBackgroundImage('');
+            return;
+        }
+
+        await weatherService.getCurrentWeatherByCityId(defaultWeather).then((res) => {
+            setData(res);
+            checkIfFavorite(res.cityId)
+            Context.setBackgroundImage(res.icon);
+        });
+        await weatherService.getWeatherByCityId(defaultWeather).then((res) => setForecastData(res));
     };
 
     const onSearch = async (coor: Latitude, units: boolean) => {
@@ -83,16 +100,58 @@ export default function HomePage() {
 
         setIsLoading(true);
 
-        const params: WeatherParams = {
-            coordinate: coor,
-            units: units ? 'metric' : 'imperial',
-        };
-
-        await weatherManager
-            .getCurrentWeatherByCoordinate(params.coordinate, params.units)
-            .then((res) => setData(res))
-            .finally(() => setIsLoading(false));
+        const chooseUnits =  units ? 'metric' : 'imperial';
+        await weatherService.getCurrentWeatherByCoordinate(coor.lon, coor.lat, chooseUnits).then((res) => {
+            setData(res)
+            checkIfFavorite(res.cityId);
+        });
+        await weatherService.getWeatherByCoordinate(coor.lon, coor.lat).then((res) =>setForecastData(res));
     };
+
+    const checkIfFavorite = async (cityId: number) => {
+        const favorite = await Storage.getFavorite();
+
+        if (favorite.length === 0) {
+            setIsFavorites(false);
+            return false;
+        }
+
+        const index = favorite.indexOf(cityId);
+
+        if (index < 0) {
+            setIsFavorites(false)
+            return false
+        } else {
+            setIsFavorites(true);
+            return true
+        }
+    }
+
+    const addToFavorite = async (cityId: number) => {
+        const favoriteArray = await Storage.getFavorite();
+        const isFavorite = favoriteArray.includes(cityId);
+
+        if (isFavorite) {
+            return;
+        }
+
+        favoriteArray.push(cityId);
+        setIsFavorites(true);
+        await Storage.addToFavorite(favoriteArray);
+
+    }
+
+    const deleteFavorite = async (cityId: number) => {
+        const favoriteArray = await Storage.getFavorite();
+        const isFavorite = favoriteArray.includes(cityId);
+
+        if (!isFavorite) {
+            return;
+        }
+
+        await Storage.removeFavorite(favoriteArray, cityId);
+        setIsFavorites(false); 
+    }
 
     const onSwipe = (gestureName: string) => {
         // const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
@@ -109,8 +168,14 @@ export default function HomePage() {
 
     useEffect(() => {
         preventNonConfiguredApp();
-        getDefaultWeather().finally(() => setIsLoading(false));
+        getDefaultWeather().finally(() => setIsLoading(false))
     }, []);
+
+    useEffect(() => {
+        if (!isLoading) {
+            refreshCurrentWeather().finally(() => setIsLoading(false));
+        }
+    }, [units])
 
     return (
         <>
@@ -120,11 +185,11 @@ export default function HomePage() {
                 <GestureRecognizer style={{ flex: 1 }} onSwipe={(gestureName) => onSwipe(gestureName)}>
                     <SafeAreaView style={styles.body}>
                         <View>
-                            <SearchBar value={search} onPress={(coor) => onSearch(coor, units)} onChange={(text: string) => setSearch(text)} />
+                            <SearchBar value={search} onPress={(coor) => onSearch(coor, units).finally(() => setIsLoading(false))} onChange={(text: string) => setSearch(text)} />
                             <View>
-                                <MainWeather data={data} valueMetric={units} onChangeMetric={onMetricChange} valueFavorites={isFavorites} onChangeFavorites={onFavoriteChange} />
+                                <MainWeather data={data} valueMetric={units} onChangeMetric={onMetricChange} valueFavorites={isFavorites} onChangeFavorites={(bool) => onFavoriteChange(bool)} />
                                 <WeatherDetails data={data} />
-                                <ForecastWeather cityId={data.cityId} units={units ? 'metric' : 'imperial'} isRefresh={isRefresh} />
+                                <ForecastWeather data={forecastData} />
                                 <Sunrise data={data} />
                             </View>
                         </View>

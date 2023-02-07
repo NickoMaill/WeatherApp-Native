@@ -5,6 +5,9 @@ import { RecursiveKeyOf } from '../core/types/common';
 type StorageNameReference = {
     favorites;
     isConfigured;
+    defaultCity;
+    language;
+    units;
 };
 
 class StorageManager {

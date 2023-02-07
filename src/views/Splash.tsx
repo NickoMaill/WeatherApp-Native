@@ -10,7 +10,7 @@ export default function Splash() {
     const Context = useContext(WeatherContext);
 
     const navigateToNextStep = async () => {
-        const isConfigured = Storage.isConfigured();
+        const isConfigured = await Storage.isConfigured();
 
         if (isConfigured) {
             Context.setShowFooter(true);

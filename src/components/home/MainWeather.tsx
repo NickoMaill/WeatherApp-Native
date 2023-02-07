@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, Switch, Text, View } from 'react-native';
-import { weatherTypeDto } from '~/contracts/weather';
+import { WeatherTypeDto } from '~/contracts/weather';
 import { regularStyle } from '~/styles/regularStyle';
 import { displayPic } from '~/utils/displayWeatherPic';
 import Title from '../common/Title';
@@ -19,7 +19,7 @@ export default function MainWeather({ valueMetric, onChangeMetric, valueFavorite
                         source={require('../../assets/icons/favorite.png')}
                         style={[{ width: 30, height: 30, marginRight: 10 }, valueFavorites ? { tintColor: 'yellow' } : { tintColor: '#fff' }]}
                     />
-                    <Switch value={valueFavorites} onChange={onChangeFavorites} />
+                    <Switch value={valueFavorites} onValueChange={(e) => onChangeFavorites(e)} />
                 </View>
                 <View style={[styles.centerItem, styles.switchContainer]}>
                     <Text style={[regularStyle.mainFont, { alignItems: 'center', marginHorizontal: 5 }]}>F°</Text>
@@ -44,8 +44,8 @@ interface IMainWeather {
     valueMetric: boolean;
     valueFavorites: boolean;
     onChangeMetric: () => void;
-    onChangeFavorites: () => void;
-    data: weatherTypeDto;
+    onChangeFavorites: (bool: boolean) => void;
+    data: WeatherTypeDto;
 }
 
 const styles = StyleSheet.create({

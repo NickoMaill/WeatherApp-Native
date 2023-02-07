@@ -3,7 +3,6 @@ import { SafeAreaView, Text, View } from 'react-native';
 import FavoriteCard from '~/components/favorites/FavoriteCard';
 import { WeatherContext } from '~/context/Context';
 import { getWeather } from '~/utils/weatherRequest';
-import Spinner from 'react-native-spinkit';
 import { useNavigation } from '@react-navigation/native';
 import TranslateView from '~/components/animations/TranslateView';
 import useStorage from '~/hooks/useStorage';
@@ -90,7 +89,7 @@ export default function Favorites() {
                     </View>
                 )
             ) : (
-                <Spinner type="Bounce" />
+                <></>
             )}
         </SafeAreaView>
     );

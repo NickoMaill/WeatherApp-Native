@@ -9,9 +9,9 @@ type FooterNavLink = {
 class NavigationResources {
     public get footerNavLink(): FooterNavLink[] {
         return [
-            { iconPath: require('../assets/icons/menu.png'), style: { tintColor: '#fff', width: 27, height: 27 }, to: 'Favorites' },
+            { iconPath: require('../assets/icons/menu.png'), style: { tintColor: '#fff', width: 27, height: 27 }, to: 'Setup' },
             { iconPath: require('../assets/icons/home.png'), style: { tintColor: '#fff', width: 27, height: 27 }, to: 'Home' },
-            { iconPath: require('../assets/icons/favorite.png'), style: { tintColor: '#fff', width: 27, height: 27 }, to: 'Setup' },
+            { iconPath: require('../assets/icons/favorite.png'), style: { tintColor: '#fff', width: 27, height: 27 }, to: 'Favorites' },
         ];
     }
 }

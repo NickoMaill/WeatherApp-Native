@@ -148,7 +148,7 @@ export type WeatherCurrentResponseApi = {
     cod: number;
 };
 
-export type weatherTypeDto = {
+export type WeatherTypeDto = {
     cod: string;
     city: string;
     country: string;
@@ -162,10 +162,10 @@ export type weatherTypeDto = {
     sunset: number;
     speed: number;
     cityId: number;
-    forecastWeather?: forecastWeatherDto[];
+    forecastWeather?: ForecastWeatherDto[];
 };
 
-export type forecastWeatherDto = {
+export type ForecastWeatherDto = {
     date: number;
     icon: string;
     temp: number;
@@ -182,5 +182,5 @@ export interface IWeatherData {
     maxTemp: number;
     humidity: number;
     speed: number;
-    forecastWeather: forecastWeatherDto[];
+    forecastWeather: ForecastWeatherDto[];
 }

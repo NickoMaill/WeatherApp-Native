@@ -23,12 +23,9 @@ export default function App() {
 
     NavigationBar.addVisibilityListener(({ visibility }) => {
         if (visibility === 'visible') {
-            setTimeout(() => {
-                NavigationBar.setVisibilityAsync('hidden');
-            }, 2000)
         }
     })
-
+    
     const value: AppContextInterface = {
         backgroundImage,
         setBackgroundImage,
@@ -41,11 +38,10 @@ export default function App() {
         showFooter, 
         setShowFooter
     };
-
+    
     useEffect(() => {
         NavigationBar.setVisibilityAsync('hidden');
-        NavigationBar.setBackgroundColorAsync('black')
-        NavigationBar.setBorderColorAsync('black')
+        NavigationBar.setBehaviorAsync('overlay-swipe');
     }, [])
 
     return (

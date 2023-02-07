@@ -4,11 +4,11 @@ import { WeatherContext } from '~/context/Context';
 import useNotification from '~/hooks/useNotification';
 import useStorage from '~/hooks/useStorage';
 import configManager from '~/managers/configManager';
-import weatherManager from '~/managers/weatherManager';
 import SearchBar, { Latitude } from '~/components/common/SearchBar';
 import Title from '~/components/common/Title';
 import Loader from '~/components/common/Loader';
 import { useNavigation } from '@react-navigation/native';
+import weatherService from '~/services/weatherService';
 
 // singleton --> start region ////////////////////////////////////
 const message = ['Bienvenue sur WeatherApp', 'Ceci est une appli de test'];
@@ -87,9 +87,10 @@ export default function Hello() {
         setIsLoading(true);
 
         try {
-            const weather = await weatherManager.getWeatherByCoordinatePoint(coor);
+            const weather = await weatherService.getCurrentWeatherByCoordinate(coor.lon, coor.lat );
             await Storage.addToFavorite([weather.cityId]);
-            await Storage.setAppConfigured();
+            await Storage.setDefaultCity(weather.cityId);
+            await Storage.setAppConfigured(true);
             Context.setIsConfigured(true);
             Context.setShowFooter(true);
         } catch (err) {

@@ -38,7 +38,7 @@ class ConfigManager {
     public get dimension() {
         return {
             width,
-            height: this.deviceInfo.os === 'android' ? height - 20 : height,
+            height,
         }
     }
 

@@ -13,7 +13,9 @@
             "backgroundColor": "#ffffff"
         },
         "androidNavigationBar": {
-            "visible": "immersive"
+           "visible": "immersive",
+           "barStyle": "#ffffff",
+           "backgroundColor": "#00000000"
         },
         "updates": {
             "fallbackToCacheTimeout": 0
@@ -26,9 +28,6 @@
             "adaptiveIcon": {
                 "foregroundImage": "./src/assets/adaptive-icon.png",
                 "backgroundColor": "#FFFFFF"
-            },
-            "androidNavigationBar": {
-                "visible": "immersive"
             }
         },
         "web": {

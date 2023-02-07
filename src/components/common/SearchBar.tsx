@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Image, StyleSheet, TextInput, View, TouchableOpacity, Keyboard, FlatList, Dimensions } from 'react-native';
 import { PlaceDetails } from '~/contracts/mapbox';
-import mapboxModule from '~/modules/services/mapboxModule';
+import mapboxModule from '~/services/mapboxService';
 import ItemListAutoComplete from './ItemListAutoComplete';
 import { FontAwesome } from '@expo/vector-icons';
 import stylesResources from '~/resources/stylesResources';

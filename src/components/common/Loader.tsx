@@ -19,23 +19,24 @@ export default function Loader() {
     return (
         <View style={styles.spinnerContainer}>
             <ActivityIndicator size={configManager.isAndroid() ? 100 : 'large'} color={color} hidesWhenStopped={false} />
-            <Text style={[regularStyle.mainFont, styles.loaderMessage]}>L'application est en cours de chargement</Text>
+            <Text style={[regularStyle.mainFont, styles.loaderMessage]}>L'application est en cours de chargement ...</Text>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     spinnerContainer: {
-        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
         height: configManager.dimension.height,
+        width: configManager.dimension.width,
         justifyContent: 'center',
         alignItems: 'center',
+        position: 'absolute',
+        paddingBottom: 40
     },
     loaderMessage: {
         color: stylesResources.color.white,
         marginTop: 30,
-        textShadowColor: '#000000',
-        textShadowRadius: 3,
-        textShadowOffset: { width: 10, height: 1 }
+        textAlign: 'center',
     },
 });
