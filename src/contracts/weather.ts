@@ -184,3 +184,11 @@ export interface IWeatherData {
     speed: number;
     forecastWeather: ForecastWeatherDto[];
 }
+
+export type FavoriteWeatherDto = {
+    city: string;
+    country: string;
+    temp: number;
+    icon: string
+    description: string;
+}

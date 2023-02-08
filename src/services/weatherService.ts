@@ -1,6 +1,6 @@
 import { Latitude } from '~/components/common/SearchBar';
 import apiManager from '~/managers/apiManager';
-import { weatherRequestApi, weatherForecastResponseApi, WeatherCurrentResponseApi, WeatherTypeDto, ForecastWeatherDto } from '~/contracts/weather';
+import { weatherRequestApi, weatherForecastResponseApi, WeatherCurrentResponseApi, WeatherTypeDto, ForecastWeatherDto, FavoriteWeatherDto } from '~/contracts/weather';
 import configManager from '~/managers/configManager';
 
 export type WeatherParams = {
@@ -38,6 +38,11 @@ class WeatherService {
         return this.formatCurrentData(data);
     }
 
+    public async getFavoriteCurrentWeatherByCityId(cityId: number, units: 'metric' | 'imperial' = 'metric', lang: 'en' | 'fr' = 'fr'): Promise<FavoriteWeatherDto> {
+        const favorite = await apiManager.get<WeatherCurrentResponseApi>('weather', `weather?id=${cityId}&units=${units}&lang=${lang}&appid=${configManager.getConfig.WEATHER_API_KEY}`)
+        return this.formatCurrentFavoriteData(favorite)            
+    }
+
     private formatForecastData(x: weatherForecastResponseApi): ForecastWeatherDto[] {
         return x.list.map((y) => {
             return {
@@ -46,6 +51,16 @@ class WeatherService {
                 temp: Math.round(y.main.temp),
             };
         })
+    }
+
+    private formatCurrentFavoriteData(x: WeatherCurrentResponseApi): FavoriteWeatherDto {
+        return {
+            city: x.name,
+            country: x.sys.country,
+            temp: Math.round(x.main.temp),
+            icon: x.weather[0].icon,
+            description: x.weather[0].description,
+        }
     }
 
     private formatCurrentData(x: WeatherCurrentResponseApi): WeatherTypeDto {

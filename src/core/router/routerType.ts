@@ -9,7 +9,7 @@ declare global {
 export type RootStackParamList = {
     Splash;
     Hello;
-    Home;
+    Home: { cityId?: number }
     Favorites;
     Setup;
     Error;
@@ -17,3 +17,6 @@ export type RootStackParamList = {
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<RootStackParamList, Screen>;
+export interface IHomeProps extends NativeStackScreenProps<RootStackParamList, 'Home'> {
+    cityId: number
+}

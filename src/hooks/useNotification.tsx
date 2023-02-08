@@ -1,4 +1,4 @@
-import Toast, { BaseToast, ErrorToast, InfoToast, ToastConfig } from 'react-native-toast-message'
+import Toast, { BaseToast, ErrorToast, InfoToast, SuccessToast, ToastConfig } from 'react-native-toast-message'
 
 export default function useNotification(): IUseNotification {
     const displaySuccess = (title: string, message: string, onPress?: () => void) => {
@@ -55,7 +55,7 @@ type toastType = 'success' | 'error' | 'info' | 'warning'
 
 export const customToastConfig: ToastConfig = {
     success: (props) => (
-        <BaseToast {...props}/>
+        <SuccessToast {...props}/>
     ),
     error: (props) => (
         <ErrorToast {...props} style={{ borderLeftColor: '#DE0300' }} />

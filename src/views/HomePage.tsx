@@ -4,7 +4,7 @@ import Loader from '~/components/common/Loader';
 import { ForecastWeatherDto, WeatherTypeDto } from '~/contracts/weather';
 import { WeatherContext } from '~/context/Context';
 import { BackHandler, StyleSheet, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 import weatherService from '~/services/weatherService';
 import SearchBar, { Latitude } from '~/components/common/SearchBar';
 import useNotification from '~/hooks/useNotification';
@@ -14,8 +14,9 @@ import MainWeather from '~/components/home/MainWeather';
 import WeatherDetails from '~/components/home/WeatherDetails';
 import ForecastWeather from '~/components/home/ForecastWeather';
 import Sunrise from '~/components/home/Sunrise';
+import { IHomeProps } from '~/core/router/routerType';
 
-export default function HomePage() {
+export default function HomePage({ navigation, route }: IHomeProps) {
     const Storage = useStorage();
     const Navigation = useNavigation();
     const Notification = useNotification();
@@ -105,8 +106,18 @@ export default function HomePage() {
             setData(res)
             checkIfFavorite(res.cityId);
         });
-        await weatherService.getWeatherByCoordinate(coor.lon, coor.lat).then((res) =>setForecastData(res));
+        await weatherService.getWeatherByCoordinate(coor.lon, coor.lat, chooseUnits).then((res) =>setForecastData(res));
     };
+
+    const onSelectedFavorite = async (cityId: number) => {
+        setIsLoading(true);
+        const chooseUnits =  units ? 'metric' : 'imperial';
+        await weatherService.getCurrentWeatherByCityId(cityId, chooseUnits).then((res) => {
+            setData(res)
+            checkIfFavorite(res.cityId);
+        });
+        await weatherService.getWeatherByCityId(cityId, chooseUnits).then((res) =>setForecastData(res));
+    }
 
     const checkIfFavorite = async (cityId: number) => {
         const favorite = await Storage.getFavorite();
@@ -137,7 +148,7 @@ export default function HomePage() {
 
         favoriteArray.push(cityId);
         setIsFavorites(true);
-        await Storage.addToFavorite(favoriteArray);
+        await Storage.addToFavorite(favoriteArray).then(() => Notification.displaySuccess('Favori ajouté !', `vous avez ajouté ${data.city} a vos favoris, consultez sa météo a tout moment`))
 
     }
 
@@ -149,7 +160,7 @@ export default function HomePage() {
             return;
         }
 
-        await Storage.removeFavorite(favoriteArray, cityId);
+        await Storage.removeFavorite(favoriteArray, cityId).then(() => Notification.displayInfo('Favori supprimé !', `vous avez supprimé ${data.city}`))
         setIsFavorites(false); 
     }
 
@@ -176,6 +187,12 @@ export default function HomePage() {
             refreshCurrentWeather().finally(() => setIsLoading(false));
         }
     }, [units])
+
+    useEffect(() => {
+        if (route.params) {
+            onSelectedFavorite(route.params.cityId).finally(() => setIsLoading(false));
+        }
+    }, [route.params])
 
     return (
         <>

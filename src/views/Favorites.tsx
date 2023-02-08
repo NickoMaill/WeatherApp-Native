@@ -1,96 +1,89 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { SafeAreaView, Text, View } from 'react-native';
+import { Animated, SafeAreaView, Text, View } from 'react-native';
 import FavoriteCard from '~/components/favorites/FavoriteCard';
 import { WeatherContext } from '~/context/Context';
 import { getWeather } from '~/utils/weatherRequest';
 import { useNavigation } from '@react-navigation/native';
 import TranslateView from '~/components/animations/TranslateView';
 import useStorage from '~/hooks/useStorage';
+import Loader from '~/components/common/Loader';
+import NoFavorites from '~/components/favorites/NoFavorites';
+import weatherService from '~/services/weatherService';
+import { FavoriteWeatherDto } from '~/contracts/weather';
+import useNotification from '~/hooks/useNotification';
 
 export default function Favorites() {
-    const navigation = useNavigation();
-    const storage = useStorage();
-    const Context = useContext(WeatherContext);
+    const Navigation = useNavigation();
+    const Storage = useStorage();
+    const Toast = useNotification();
 
     const [favoritesData, setFavoritesData] = useState([]);
-    const [favorites, setFavorites] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [favorites, setFavorites] = useState<number[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isLoadingDelete, setIsLoadingDelete] = useState<boolean>(false);
 
-    const getFullData = (city) => {
-        navigation.navigate('Home');
-        Context.setIsLoading(true);
-        getWeather(city)
-            .then((res) => Context.setData(res))
-            .finally(() => Context.setIsLoading(false));
+    const getFullData = (cityId: number) => {
+        Navigation.navigate('Home', { cityId });
     };
 
     const checkFavorites = async () => {
-        Context.setIsLoading(true);
-        const favorite = await storage.getFavorite();
-        setFavorites(favorite);
-    };
+        setIsLoading(true);
+        const favorites = await Storage.getFavorite();
 
-    const deleteFavorite = async (id: string) => {
-        Context.setIsLoading(true);
-        await storage.removeFavorite(favorites, id).finally(() => {
-            Context.setIsLoading(false);
-            favoritesMap();
-        });
-    };
-
-    const favoritesMap = () => {
-        if (favorites.length > 0) {
-            favorites.map((favName) => {
-                getWeather(favName, 'metric').then((res) => {
-                    setFavoritesData((prevState) => [...prevState, res]);
-                });
-            });
-            Context.setIsLoading(false);
-        } else {
-            Context.setIsLoading(false);
+        if (!favorites) {
+            setIsLoading(false);
+            return;
         }
+        
+        setFavorites(favorites);
     };
+
+    const deleteFavorite = async (id: number) => {
+        setIsLoadingDelete(true);
+        const defaultWeather = await Storage.getDefaultCity();
+        
+        if (id === defaultWeather) {
+            Toast.displayWarning('Suppression impossible', 'vous ne pouvez pas supprimer votre ville par défaut')
+            setIsLoadingDelete(false);
+            return;
+        }
+        await Storage.removeFavorite(favorites, id);
+
+        const newFavorites = await Storage.getFavorite();
+        setFavorites(newFavorites);
+        setIsLoadingDelete(false);
+    };
+
+    const animationSequence = () => {
+        Animated.sequence([]).start()        
+    }
 
     useEffect(() => {
-        Context.setIsLoading(true);
-        setFavoritesData([]);
-        checkFavorites();
+        checkFavorites().finally(() => setIsLoading(false))
     }, []);
 
-    useEffect(() => {
-        favoritesMap();
-    }, [favorites]);
-
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-            {!Context.isLoading ? (
+        <>
+            {!isLoading ? (
                 favorites.length > 0 ? (
-                    favoritesData.map((fav, i) => {
-                        if (i <= favorites.length) {
-                            if (favorites.includes(fav.city.name)) {
-                                return (
-                                    <TranslateView initialValue={500} endValue={0} duration={500}>
-                                        <FavoriteCard
-                                            key={i}
-                                            loading={isLoading}
-                                            data={fav}
-                                            index={i}
-                                            onCrossPress={() => deleteFavorite(fav.city.name)}
-                                            onPressButton={() => getFullData(fav.city.name)}
-                                        />
-                                    </TranslateView>
-                                );
-                            }
-                        }
+                    favorites.map((fav, i) => {
+                        return (
+                            <FavoriteCard
+                                key={i}
+                                isLoadingDelete={isLoadingDelete}
+                                cityId={fav}
+                                index={i}
+                                onCrossPress={() => deleteFavorite(fav)}
+                                onPressButton={() => getFullData(fav)}
+                            />
+                        );
                     })
                 ) : (
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 30, color: '#fff' }}>Vous n'avez pas de favoris...</Text>
-                    </View>
+                    <NoFavorites/>
                 )
             ) : (
-                <></>
+                <Loader/>
             )}
-        </SafeAreaView>
+        </>
     );
 }
