@@ -1,8 +1,9 @@
 import React, { ReactNode } from 'react';
 import { Text, StyleSheet, StyleProp, TextStyle } from 'react-native';
+import { Bold } from './Texted';
 
 export default function Title({ children, size, style }: ITtile) {
-    return <Text style={[styles.title, { fontSize: size }, style]}>{children}</Text>;
+    return <Bold style={[styles.title, { fontSize: size }, style]}>{children}</Bold>;
 }
 
 interface ITtile {

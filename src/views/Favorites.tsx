@@ -11,6 +11,8 @@ import NoFavorites from '~/components/favorites/NoFavorites';
 import weatherService from '~/services/weatherService';
 import { FavoriteWeatherDto } from '~/contracts/weather';
 import useNotification from '~/hooks/useNotification';
+import GestureRecognizer from 'react-native-swipe-gestures';
+import Title from '~/components/common/Texted';
 
 export default function Favorites() {
     const Navigation = useNavigation();
@@ -34,16 +36,16 @@ export default function Favorites() {
             setIsLoading(false);
             return;
         }
-        
+
         setFavorites(favorites);
     };
 
     const deleteFavorite = async (id: number) => {
         setIsLoadingDelete(true);
         const defaultWeather = await Storage.getDefaultCity();
-        
+
         if (id === defaultWeather) {
-            Toast.displayWarning('Suppression impossible', 'vous ne pouvez pas supprimer votre ville par défaut')
+            Toast.displayWarning('Suppression impossible', 'vous ne pouvez pas supprimer votre ville par défaut');
             setIsLoadingDelete(false);
             return;
         }
@@ -55,35 +57,50 @@ export default function Favorites() {
     };
 
     const animationSequence = () => {
-        Animated.sequence([]).start()        
-    }
+        Animated.sequence([]).start();
+    };
+
+    const onSwipe = (gestureName: string) => {
+        // const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
+        switch (gestureName) {
+            case 'SWIPE_RIGHT':
+                Navigation.navigate('Home');
+            default:
+                break;
+        }
+    };
 
     useEffect(() => {
-        checkFavorites().finally(() => setIsLoading(false))
+        checkFavorites().finally(() => setIsLoading(false));
     }, []);
 
     return (
-        <>
+        <GestureRecognizer style={{ flex: 1 }} onSwipe={(gestureName) => onSwipe(gestureName)}>
             {!isLoading ? (
-                favorites.length > 0 ? (
-                    favorites.map((fav, i) => {
-                        return (
-                            <FavoriteCard
-                                key={i}
-                                isLoadingDelete={isLoadingDelete}
-                                cityId={fav}
-                                index={i}
-                                onCrossPress={() => deleteFavorite(fav)}
-                                onPressButton={() => getFullData(fav)}
-                            />
-                        );
-                    })
-                ) : (
-                    <NoFavorites/>
-                )
+                <View>
+                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                        <Title style={{ fontSize: 20 }}>Vos Favoris</Title>
+                    </View>
+                    {favorites.length > 0 ? (
+                        favorites.map((fav, i) => {
+                            return (
+                                <FavoriteCard
+                                    key={i}
+                                    isLoadingDelete={isLoadingDelete}
+                                    cityId={fav}
+                                    index={i}
+                                    onCrossPress={() => deleteFavorite(fav).then(() => Toast.displayInfo('Favori supprimé', `vous avez supprimé votre favori`))}
+                                    onPressButton={() => getFullData(fav)}
+                                />
+                            );
+                        })
+                    ) : (
+                        <NoFavorites />
+                    )}
+                </View>
             ) : (
-                <Loader/>
+                <Loader />
             )}
-        </>
+        </GestureRecognizer>
     );
 }

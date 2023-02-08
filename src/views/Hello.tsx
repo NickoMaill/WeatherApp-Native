@@ -1,11 +1,11 @@
-import React, { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
 import { WeatherContext } from '~/context/Context';
 import useNotification from '~/hooks/useNotification';
 import useStorage from '~/hooks/useStorage';
 import configManager from '~/managers/configManager';
 import SearchBar, { Latitude } from '~/components/common/SearchBar';
-import Title from '~/components/common/Title';
+import Title from '~/components/common/Texted';
 import Loader from '~/components/common/Loader';
 import { useNavigation } from '@react-navigation/native';
 import weatherService from '~/services/weatherService';
@@ -87,7 +87,7 @@ export default function Hello() {
         setIsLoading(true);
 
         try {
-            const weather = await weatherService.getCurrentWeatherByCoordinate(coor.lon, coor.lat );
+            const weather = await weatherService.getCurrentWeatherByCoordinate(coor.lon, coor.lat);
             await Storage.addToFavorite([weather.cityId]);
             await Storage.setDefaultCity(weather.cityId);
             await Storage.setAppConfigured(true);
@@ -125,15 +125,11 @@ export default function Hello() {
                 <View style={styles.animationContainer}>
                     {!displayForm ? (
                         <Animated.View style={{ opacity }}>
-                            <Title style={styles.title} size={50}>
-                                {message[messageToDisplay]}
-                            </Title>
+                            <Title style={styles.title}>{message[messageToDisplay]}</Title>
                         </Animated.View>
                     ) : (
                         <Animated.View style={{ opacity }}>
-                            <Title style={{ color: 'black' }} size={30}>
-                                Choisissez une ville
-                            </Title>
+                            <Title style={{ color: 'black', fontSize: 30 }}>Choisissez une ville</Title>
                             <SearchBar onPress={(coor) => onPress(coor).finally(() => Navigation.navigate('Home'))} />
                         </Animated.View>
                     )}
@@ -153,5 +149,6 @@ const styles = StyleSheet.create({
     title: {
         color: 'black',
         textAlign: 'center',
+        fontSize: 50,
     },
 });

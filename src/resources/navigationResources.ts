@@ -1,6 +1,6 @@
 import { ImageSourcePropType, ImageStyle, StyleProp } from 'react-native';
 
-type FooterNavLink = {
+export type FooterNavLink = {
     iconPath: ImageSourcePropType;
     style: StyleProp<ImageStyle>;
     to: 'Home' | 'Favorites' | 'Setup';

@@ -33,6 +33,12 @@ export default function HomePage({ navigation, route }: IHomeProps) {
         return true;
     });
 
+    navigation.addListener('focus', () => {
+        if(!isLoading && data) {
+            setIsFavorites(!checkIfFavorite(data.cityId))
+        }
+    })
+
     const preventBackTooForward = () => {
         if (Navigation.getState().index === 1) {
             BackHandler.exitApp();
@@ -167,10 +173,10 @@ export default function HomePage({ navigation, route }: IHomeProps) {
     const onSwipe = (gestureName: string) => {
         // const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
         switch (gestureName) {
-            case 'SWIPE_LEFT':
+            case 'SWIPE_RIGHT':
                 Navigation.navigate('Setup');
                 break;
-            case 'SWIPE_RIGHT':
+            case 'SWIPE_LEFT':
                 Navigation.navigate('Favorites');
             default:
                 break;

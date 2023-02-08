@@ -5,7 +5,8 @@ import stylesResources from '~/resources/stylesResources';
 import weatherService from '~/services/weatherService';
 import { regularStyle } from '../../styles/regularStyle';
 import { displayPic } from '../../utils/displayWeatherPic';
-import Title from '../common/Title';
+import { Regular } from '../common/Texted';
+import Title from '../common/Texted';
 
 export default function FavoriteCard({ cityId, index, onCrossPress, onPressButton, isLoadingDelete }: IFavoriteCard) {
     const color = ['#00A8F4', '#CDDC39', '#607D8A', '#00A8F4', '#673AB6', '#ed9c10', '#ed577d', '#3f3c1a'];
@@ -31,13 +32,13 @@ export default function FavoriteCard({ cityId, index, onCrossPress, onPressButto
                     <View style={{ flexDirection: 'row' }}>
                         <View style={{ marginLeft: 10, justifyContent: 'center', alignItems: 'center', marginRight: 30 }}>
                             <Image style={styles.image} source={displayPic(data.icon)} />
-                            <Text style={[regularStyle.mainFont, { fontSize: 15 }]}>{Math.round(data.temp)} °C</Text>
+                            <Regular style={{ fontSize: 15 }}>{Math.round(data.temp)} °C</Regular>
                         </View>
                         <View>
-                            <Title size={17}>
+                            <Title style={{ fontSize: 17 }}>
                                 {data.city}, {data.country}
                             </Title>
-                            <Text style={[regularStyle.mainFont, { fontSize: 15 }]}>{data.description}</Text>
+                            <Regular style={[regularStyle.mainFont, { fontSize: 15 }]}>{data.description}</Regular>
                         </View>
                     </View>
                     {!isLoadingDelete ? (
@@ -45,7 +46,7 @@ export default function FavoriteCard({ cityId, index, onCrossPress, onPressButto
                             <Image style={styles.closeCross} source={require('../../assets/icons/cross.png')} />
                         </TouchableOpacity>
                     ) : (
-                        <ActivityIndicator size={60} color={stylesResources.color.white}/>
+                        <ActivityIndicator size={60} color={stylesResources.color.white} />
                     )}
                 </>
             ) : (

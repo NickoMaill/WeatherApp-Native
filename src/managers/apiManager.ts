@@ -20,9 +20,8 @@ class ApiManager {
         };
 
         const url = `${apiHost}/${route}`;
-
+        
         const request = await fetch(url, options);
-
         const response = await request.json();
 
         return response;

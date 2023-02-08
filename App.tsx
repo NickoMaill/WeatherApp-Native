@@ -12,6 +12,9 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { customToastConfig } from './src/hooks/useNotification';
 import configManager from '~/managers/configManager';
 import * as NavigationBar from 'expo-navigation-bar';
+import 'moment/locale/fr';
+import 'moment/locale/en-gb';
+import moment from 'moment';
 
 export default function App() {
     const isResourcesLoaded = useCachedResources();
@@ -21,11 +24,13 @@ export default function App() {
     const [favorites, setFavorites] = useState<string[]>([]);
     const [showFooter, setShowFooter] = useState<boolean>(false);
 
+    moment.locale('fr');
+
     NavigationBar.addVisibilityListener(({ visibility }) => {
         if (visibility === 'visible') {
         }
-    })
-    
+    });
+
     const value: AppContextInterface = {
         backgroundImage,
         setBackgroundImage,
@@ -35,18 +40,20 @@ export default function App() {
         setIsConfigured,
         favorites,
         setFavorites,
-        showFooter, 
-        setShowFooter
+        showFooter,
+        setShowFooter,
     };
-    
+
     useEffect(() => {
         NavigationBar.setVisibilityAsync('hidden');
         NavigationBar.setBehaviorAsync('overlay-swipe');
-    }, [])
-
-    return (
-        <>
-            {isResourcesLoaded ? (
+    }, []);
+    
+    if (!isResourcesLoaded) {
+        return null
+    } else {
+        return (
+            <>
                 <WeatherContext.Provider value={value}>
                     <StatusBar barStyle={'light-content'} />
                     <SafeAreaProvider>
@@ -58,11 +65,10 @@ export default function App() {
                         </SafeAreaView>
                     </SafeAreaProvider>
                 </WeatherContext.Provider>
-            ) : (
-                <Loader />
-            )}
-        </>
-    );
+            </>
+        );
+    }
+
 }
 
 const styles = StyleSheet.create({
@@ -72,6 +78,6 @@ const styles = StyleSheet.create({
 
     droidSafeArea: {
         flex: 1,
-        paddingTop:  configManager.isIos() ? -48 : 0,
+        paddingTop: configManager.isIos() ? -48 : 0,
     },
 });

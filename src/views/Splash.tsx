@@ -3,6 +3,7 @@ import LottieView from 'lottie-react-native';
 import { useNavigation } from '@react-navigation/native';
 import useStorage from '~/hooks/useStorage';
 import { WeatherContext } from '~/context/Context';
+import { View } from 'react-native';
 
 export default function Splash() {
     const navigate = useNavigation();
@@ -20,5 +21,9 @@ export default function Splash() {
         }
     };
 
-    return <LottieView source={require('../assets/splash.json')} autoPlay loop={false} speed={1} onAnimationFinish={navigateToNextStep} />;
+    return (
+        <View style={{ flex: 1 }} onTouchStart={navigateToNextStep}>
+            <LottieView source={require('../assets/splash.json')} autoPlay loop={false} onAnimationFinish={navigateToNextStep} />
+        </View>
+    );
 }

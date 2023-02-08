@@ -3,6 +3,7 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import configManager from '~/managers/configManager';
 import { regularStyle } from '~/styles/regularStyle';
 import stylesResources from '~/resources/stylesResources';
+import { Regular } from './Texted';
 
 export default function Loader() {
     const [color, setColor] = useState<string>(stylesResources.color.blue);
@@ -19,7 +20,7 @@ export default function Loader() {
     return (
         <View style={styles.spinnerContainer}>
             <ActivityIndicator size={configManager.isAndroid() ? 100 : 'large'} color={color} hidesWhenStopped={false} />
-            <Text style={[regularStyle.mainFont, styles.loaderMessage]}>L'application est en cours de chargement ...</Text>
+            <Regular style={styles.loaderMessage}>L'application est en cours de chargement ...</Regular>
         </View>
     );
 }

@@ -3,13 +3,14 @@ import { Image, StyleSheet, Switch, Text, View } from 'react-native';
 import { WeatherTypeDto } from '~/contracts/weather';
 import { regularStyle } from '~/styles/regularStyle';
 import { displayPic } from '~/utils/displayWeatherPic';
-import Title from '../common/Title';
+import { Regular } from '../common/Texted';
+import Title from '../common/Texted';
 
 export default function MainWeather({ valueMetric, onChangeMetric, valueFavorites, onChangeFavorites, data }: IMainWeather) {
     return (
         <View>
             <View style={styles.centerItem}>
-                <Title size={20}>
+                <Title style={{ fontSize: 20 }}>
                     {data.city}, {data.country}
                 </Title>
             </View>
@@ -22,9 +23,9 @@ export default function MainWeather({ valueMetric, onChangeMetric, valueFavorite
                     <Switch value={valueFavorites} onValueChange={(e) => onChangeFavorites(e)} />
                 </View>
                 <View style={[styles.centerItem, styles.switchContainer]}>
-                    <Text style={[regularStyle.mainFont, { alignItems: 'center', marginHorizontal: 5 }]}>F°</Text>
+                    <Regular style={[regularStyle.mainFont, { alignItems: 'center', marginHorizontal: 5 }]}>F°</Regular>
                     <Switch value={valueMetric} onChange={onChangeMetric} />
-                    <Text style={[regularStyle.mainFont, { alignItems: 'center', marginHorizontal: 5 }]}>C°</Text>
+                    <Regular style={[regularStyle.mainFont, { alignItems: 'center', marginHorizontal: 5 }]}>C°</Regular>
                 </View>
             </View>
             <View style={styles.mainView}>
@@ -32,8 +33,8 @@ export default function MainWeather({ valueMetric, onChangeMetric, valueFavorite
                     <Image style={{ tintColor: '#fff', width: 60, height: 60 }} source={displayPic(data.icon)} />
                 </View>
                 <View style={styles.centerItem}>
-                    <Text style={{ color: '#fff', fontSize: 20, marginVertical: 15 }}>{data.description}</Text>
-                    <Title size={25}>{Math.round(data.temp)} °C</Title>
+                    <Regular style={{ color: '#fff', fontSize: 20, marginVertical: 15 }}>{data.description}</Regular>
+                    <Title style={{ fontSize: 25 }}>{Math.round(data.temp)} °C</Title>
                 </View>
             </View>
         </View>

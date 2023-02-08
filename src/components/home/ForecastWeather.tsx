@@ -4,6 +4,7 @@ import { Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { ForecastWeatherDto } from '~/contracts/weather';
 import { regularStyle } from '~/styles/regularStyle';
+import { Regular } from '../common/Texted';
 import ForecastWeatherDetails from './ForecastWeatherDetails';
 
 // singleton --> start region ////////////////////////////////////,
@@ -68,7 +69,7 @@ export default function ForecastWeather({ data }: IForecastWeather) {
     return (
         <View>
             <View style={{ borderBottomWidth: 1, borderBottomColor: '#fff', paddingBottom: 10, marginTop: 20, alignItems: 'center' }}>
-                <Text style={[regularStyle.mainFont, { fontSize: 16 }]}>Météo pour les 4 prochains jours</Text>
+                <Regular style={{ fontSize: 16 }}>Météo pour les 4 prochains jours</Regular>
             </View>
             <View>
                 <FlatList
