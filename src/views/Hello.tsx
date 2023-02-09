@@ -9,22 +9,24 @@ import Title from '~/components/common/Texted';
 import Loader from '~/components/common/Loader';
 import { useNavigation } from '@react-navigation/native';
 import weatherService from '~/services/weatherService';
-import { langResource } from '~/resources/i18n/fr';
+import useResources from '~/hooks/useResources';
 
-// singleton --> start region ////////////////////////////////////
-const message = [langResource.hello.splashMessage1, langResource.hello.splashMessage2];
-// singleton --> end region //////////////////////////////////////
 
 export default function Hello() {
+    // singleton --> start region ////////////////////////////////////
+    // singleton --> end region //////////////////////////////////////
+    
     // hooks --> start region ////////////////////////////////////
     const Toast = useNotification();
     const Context = useContext(WeatherContext);
     const Storage = useStorage();
     const Navigation = useNavigation();
+    const Resources = useResources();
     // hooks --> end region //////////////////////////////////////
-
+    
     // state --> start region ////////////////////////////////////
     const opacity = useRef(new Animated.Value(0)).current; // start point for animation
+    const message = [Resources.translate('hello.splashMessage1'), Resources.translate('hello.splashMessage2')];
     const [messageToDisplay, setMessageToDisplay] = useState<number>(0); // @index of message to display
     const [displayForm, setDisplayForm] = useState<boolean>(false); // @boolean to display search bar
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -82,7 +84,10 @@ export default function Hello() {
      */
     const onPress = async (coor: Latitude) => {
         if (!coor) {
-            return Toast.displayWarning(langResource.common.toast.noCityTitle, langResource.common.toast.noCityMessage);
+            return Toast.displayWarning(
+                Resources.translate('common.toast.noCityTitle'), 
+                Resources.translate('common.toast.noCityMessage')
+            );
         }
 
         setIsLoading(true);
@@ -130,7 +135,7 @@ export default function Hello() {
                         </Animated.View>
                     ) : (
                         <Animated.View style={{ opacity }}>
-                            <Title style={{ color: 'black', fontSize: 30 }}>{langResource.hello.chooseCity}</Title>
+                            <Title style={{ color: 'black', fontSize: 30 }}>{Resources.translate('hello.chooseCity')}</Title>
                             <SearchBar onPress={(coor) => onPress(coor).finally(() => Navigation.navigate('Home'))} />
                         </Animated.View>
                     )}

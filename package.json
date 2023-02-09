@@ -18,14 +18,17 @@
     "@rnmapbox/maps": "^10.0.0-beta.65",
     "dotenv": "^16.0.3",
     "expo": "~47.0.12",
+    "expo-navigation-bar": "~2.0.1",
     "expo-splash-screen": "^0.17.5",
     "expo-status-bar": "~1.4.2",
     "i": "^0.3.7",
+    "i18next": "^22.4.9",
     "lottie-react-native": "^5.1.5",
     "moment": "^2.29.4",
     "npm": "^9.4.1",
     "react": "18.1.0",
     "react-dom": "18.1.0",
+    "react-i18next": "^12.1.5",
     "react-native": "0.70.5",
     "react-native-detect-navbar-android": "^0.3.0",
     "react-native-dotenv": "^3.4.7",
@@ -42,8 +45,7 @@
     "react-native-toast-message": "^2.1.5",
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "~0.18.9",
-    "rn-detect-soft-nav": "^1.1.1",
-    "expo-navigation-bar": "~2.0.1"
+    "rn-detect-soft-nav": "^1.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

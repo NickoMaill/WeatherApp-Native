@@ -4,7 +4,7 @@ import Loader from '~/components/common/Loader';
 import { ForecastWeatherDto, WeatherTypeDto } from '~/contracts/weather';
 import { WeatherContext } from '~/context/Context';
 import { BackHandler, StyleSheet, View } from 'react-native';
-import { RouteProp, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import weatherService from '~/services/weatherService';
 import SearchBar, { Latitude } from '~/components/common/SearchBar';
 import useNotification from '~/hooks/useNotification';
@@ -15,12 +15,13 @@ import WeatherDetails from '~/components/home/WeatherDetails';
 import ForecastWeather from '~/components/home/ForecastWeather';
 import Sunrise from '~/components/home/Sunrise';
 import { IHomeProps } from '~/core/router/routerType';
-import { langResource } from '~/resources/i18n/fr';
+import useResources from '~/hooks/useResources';
 
 export default function HomePage({ navigation, route }: IHomeProps) {
     const Storage = useStorage();
     const Navigation = useNavigation();
     const Notification = useNotification();
+    const Resources = useResources();
     const Context = useContext(WeatherContext);
     const [data, setData] = useState<WeatherTypeDto | null>(null);
     const [forecastData, setForecastData] = useState<ForecastWeatherDto[] | null>(null);
@@ -102,7 +103,7 @@ export default function HomePage({ navigation, route }: IHomeProps) {
 
     const onSearch = async (coor: Latitude, units: boolean) => {
         if (!coor) {
-            Notification.displayWarning(langResource.common.toast.noCityTitle, langResource.common.toast.noCityMessage);
+            Notification.displayWarning(Resources.translate('common.toast.noCityTitle'), Resources.translate('common.toast.noCityMessage'));
             return;
         }
 
@@ -156,7 +157,10 @@ export default function HomePage({ navigation, route }: IHomeProps) {
         favoriteArray.push(cityId);
         setIsFavorites(true);
         await Storage.addToFavorite(favoriteArray)
-        .then(() => Notification.displaySuccess(langResource.common.toast.favoriteAddedTitle, langResource.common.toast.favoriteAddedMessage(data.city)))
+        .then(() => Notification.displaySuccess(
+            Resources.translate('common.toast.favoriteAddedTitle'), 
+            Resources.translate('common.toast.favoriteAddedMessage' , { city: data.city})
+        ))
     }
 
     const deleteFavorite = async (cityId: number) => {
@@ -168,7 +172,10 @@ export default function HomePage({ navigation, route }: IHomeProps) {
         }
 
         await Storage.removeFavorite(favoriteArray, cityId)
-        .then(() => Notification.displayInfo(langResource.common.toast.favoriteDeletedTitle, langResource.common.toast.favoriteDeletedMessage(data.city)))
+        .then(() => Notification.displayInfo(
+            Resources.translate('common.toast.favoriteDeletedTitle'), 
+            Resources.translate('common.toast.favoriteDeletedMessage' , { city: data.city})
+        ))
         setIsFavorites(false); 
     }
 

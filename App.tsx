@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ImageBackground, StatusBar, StyleSheet } from 'react-native';
 import { WeatherContext } from './src/context/Context';
 import assetsWeatherManager from './src/managers/assetsWeatherManager';
@@ -7,7 +7,6 @@ import { AppContextInterface } from './src/context/Context';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Router from './src/core/router/Router';
 import useCachedResources from './src/hooks/useCachedResources';
-import Loader from './src/components/common/Loader';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { customToastConfig } from './src/hooks/useNotification';
 import configManager from '~/managers/configManager';
@@ -15,6 +14,7 @@ import * as NavigationBar from 'expo-navigation-bar';
 import 'moment/locale/fr';
 import 'moment/locale/en-gb';
 import moment from 'moment';
+import './src/resources/i18n/i18n'
 
 export default function App() {
     const isResourcesLoaded = useCachedResources();
