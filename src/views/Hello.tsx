@@ -9,9 +9,10 @@ import Title from '~/components/common/Texted';
 import Loader from '~/components/common/Loader';
 import { useNavigation } from '@react-navigation/native';
 import weatherService from '~/services/weatherService';
+import { langResource } from '~/resources/i18n/fr';
 
 // singleton --> start region ////////////////////////////////////
-const message = ['Bienvenue sur WeatherApp', 'Ceci est une appli de test'];
+const message = [langResource.hello.splashMessage1, langResource.hello.splashMessage2];
 // singleton --> end region //////////////////////////////////////
 
 export default function Hello() {
@@ -81,7 +82,7 @@ export default function Hello() {
      */
     const onPress = async (coor: Latitude) => {
         if (!coor) {
-            return Toast.displayWarning('aucune ville sélectionnée', 'vous devez séléctioner une ville pour acceder a la meteo');
+            return Toast.displayWarning(langResource.common.toast.noCityTitle, langResource.common.toast.noCityMessage);
         }
 
         setIsLoading(true);
@@ -129,7 +130,7 @@ export default function Hello() {
                         </Animated.View>
                     ) : (
                         <Animated.View style={{ opacity }}>
-                            <Title style={{ color: 'black', fontSize: 30 }}>Choisissez une ville</Title>
+                            <Title style={{ color: 'black', fontSize: 30 }}>{langResource.hello.chooseCity}</Title>
                             <SearchBar onPress={(coor) => onPress(coor).finally(() => Navigation.navigate('Home'))} />
                         </Animated.View>
                     )}

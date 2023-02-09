@@ -15,6 +15,7 @@ import WeatherDetails from '~/components/home/WeatherDetails';
 import ForecastWeather from '~/components/home/ForecastWeather';
 import Sunrise from '~/components/home/Sunrise';
 import { IHomeProps } from '~/core/router/routerType';
+import { langResource } from '~/resources/i18n/fr';
 
 export default function HomePage({ navigation, route }: IHomeProps) {
     const Storage = useStorage();
@@ -101,7 +102,7 @@ export default function HomePage({ navigation, route }: IHomeProps) {
 
     const onSearch = async (coor: Latitude, units: boolean) => {
         if (!coor) {
-            Notification.displayWarning('Aucune ville sélectionnée', 'Vous devez choisir une ville pour pouvoir afficher sa météo');
+            Notification.displayWarning(langResource.common.toast.noCityTitle, langResource.common.toast.noCityMessage);
             return;
         }
 
@@ -154,8 +155,8 @@ export default function HomePage({ navigation, route }: IHomeProps) {
 
         favoriteArray.push(cityId);
         setIsFavorites(true);
-        await Storage.addToFavorite(favoriteArray).then(() => Notification.displaySuccess('Favori ajouté !', `vous avez ajouté ${data.city} a vos favoris, consultez sa météo a tout moment`))
-
+        await Storage.addToFavorite(favoriteArray)
+        .then(() => Notification.displaySuccess(langResource.common.toast.favoriteAddedTitle, langResource.common.toast.favoriteAddedMessage(data.city)))
     }
 
     const deleteFavorite = async (cityId: number) => {
@@ -166,12 +167,12 @@ export default function HomePage({ navigation, route }: IHomeProps) {
             return;
         }
 
-        await Storage.removeFavorite(favoriteArray, cityId).then(() => Notification.displayInfo('Favori supprimé !', `vous avez supprimé ${data.city}`))
+        await Storage.removeFavorite(favoriteArray, cityId)
+        .then(() => Notification.displayInfo(langResource.common.toast.favoriteDeletedTitle, langResource.common.toast.favoriteDeletedMessage(data.city)))
         setIsFavorites(false); 
     }
 
     const onSwipe = (gestureName: string) => {
-        // const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
         switch (gestureName) {
             case 'SWIPE_RIGHT':
                 Navigation.navigate('Setup');
