@@ -4,11 +4,13 @@ class StylesResources {
     // public --> start region /////////////////////////////////////////////
     public get color() {
         return {
-            black: '#000000',
+            black: '#0D0D0D',
+            customBlack: '#1F1F1F',
             white: '#ffffff',
             blue: '#00A8F4',
             violet: '#673AB6',
-            warn: '',
+            warn: '#ed9c10',
+            transparent: '#00000000',
         }
     }
     public get favoritesColor() {

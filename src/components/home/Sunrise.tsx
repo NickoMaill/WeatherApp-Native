@@ -2,7 +2,7 @@ import moment from 'moment';
 import React, { useContext } from 'react';
 import { Image, Text, View } from 'react-native';
 import { WeatherContext } from '~/context/Context';
-import { WeatherTypeDto } from '~/contracts/weather';
+import { WeatherTypeDto } from '~/types/weather';
 import { regularStyle } from '~/styles/regularStyle';
 import { Regular } from '../common/Texted';
 

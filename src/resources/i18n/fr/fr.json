@@ -15,5 +15,17 @@
         "splashMessage2": "Ceci est une appli de test",
         "chooseCity": "Choisissez une ville"
     },
-    "home": {}
+    "home": {},
+    "setup": {
+        "title": "Réglages",
+        "about": "A propos du développeur",
+        "defaultCity": "Ville par défaut",
+        "defaultUnits": "Unité par défaut",
+        "languageSelection": "Sélection de la langue",
+        "toast": {
+            "successLanguage": "Langue changée avec succès",
+            "successUnits": "Unités changées avec succès",
+            "successCity": "Ville par défaut changée avec succès"
+        }
+    }
 }

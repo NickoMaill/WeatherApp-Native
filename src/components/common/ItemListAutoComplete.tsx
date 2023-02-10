@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { Regular } from './Texted';
+import stylesResources from '~/resources/stylesResources';
 
 export default function ItemListAutoComplete({ city, onPress }: IItemListAutocomplete) {
     return (
@@ -27,6 +28,8 @@ const styles = StyleSheet.create({
         marginRight: 15
     },
     text: {
-        flex: 1
+        flex: 1,
+        color: stylesResources.color.black,
+        fontSize: 16
     }
 })

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Image, StyleSheet, TextInput, View, TouchableOpacity, Keyboard, FlatList, Dimensions } from 'react-native';
-import { PlaceDetails } from '~/contracts/mapbox';
+import { Image, StyleSheet, TextInput, View, TouchableOpacity, Keyboard, FlatList, Dimensions, BackHandler } from 'react-native';
+import { PlaceDetails } from '~/types/mapbox';
 import mapboxModule from '~/services/mapboxService';
 import ItemListAutoComplete from './ItemListAutoComplete';
 import { FontAwesome } from '@expo/vector-icons';
@@ -15,7 +15,14 @@ export default function SearchBar({ onPress, onChange, value }: ISearchBar) {
     const [city, setCity] = useState<string>('');
     const [autocompleteCities, setAutocompleteCities] = useState<PlaceDetails[] | null>(null);
     const [coordinate, setCoordinate] = useState<Latitude | null>(null);
-    const [buttonColor, setButtonColor] = useState<string>(stylesResources.color.black)
+    const [buttonColor, setButtonColor] = useState<string>(stylesResources.color.black);
+
+    BackHandler.addEventListener('hardwareBackPress', () => {
+        if (autocompleteCities !== null) {
+            setAutocompleteCities(null);
+        }
+        return true
+    })
 
     const handleCityChange = async (e: string) => {
         setCity(e);
@@ -24,8 +31,8 @@ export default function SearchBar({ onPress, onChange, value }: ISearchBar) {
         const res = await mapboxModule.autoCompleteCity(city);
 
         if (res.features) {
-            if(res.features.length < 1){
-                setAutocompleteCities(null)
+            if (res.features.length < 1) {
+                setAutocompleteCities(null);
             } else {
                 setAutocompleteCities(res.features.map((place) => place));
             }
@@ -39,16 +46,17 @@ export default function SearchBar({ onPress, onChange, value }: ISearchBar) {
         setCoordinate({ lon: currentCoordinate[0], lat: currentCoordinate[1] });
         setCity(autocompleteCities[i].place_name);
         setAutocompleteCities(null);
-        setButtonColor(stylesResources.color.blue)
+        setButtonColor(stylesResources.color.blue);
     };
 
     useEffect(() => {
         if (city.length < 1) {
             setAutocompleteCities(null);
             setCoordinate(null);
-            setButtonColor(stylesResources.color.black)
+            setButtonColor(stylesResources.color.black);
         }
-    }, [autocompleteCities])
+        console.log(Context.isConfigured)
+    }, [autocompleteCities]);
 
     return (
         <>
@@ -60,16 +68,16 @@ export default function SearchBar({ onPress, onChange, value }: ISearchBar) {
                     onChangeText={handleCityChange}
                     style={styles.inputSearch}
                     placeholder="Rechercher une ville"
-                    textContentType="countryName"
+                    textContentType="addressCityAndState"
                 />
                 <View style={{ alignItems: 'center' }}>
                     <TouchableOpacity onPress={() => onPress(coordinate)}>
-                        <FontAwesome size={30} style={{ paddingHorizontal: 3, paddingVertical: 5 }} color={buttonColor} name='arrow-circle-right' />
+                        <FontAwesome size={30} style={{ paddingHorizontal: 3, paddingVertical: 5 }} color={buttonColor} name="arrow-circle-right" />
                     </TouchableOpacity>
                 </View>
             </View>
             {autocompleteCities && (
-                <View  style={[styles.listContainer, { height: autocompleteCities.length - 1 * 50, top: Context.isConfigured ? 60 : 120 }]}>
+                <View style={[styles.listContainer, { height: autocompleteCities.length - 1 * 50, top: Context.isConfigured ? 60 : 120, left: Context.isConfigured ? 40 : 0}]}>
                     <FlatList
                         data={autocompleteCities}
                         renderItem={(place) => <ItemListAutoComplete onPress={() => onCitySelected(place.index)} city={place.item.place_name} />}
@@ -112,26 +120,17 @@ const styles = StyleSheet.create({
     inputSearch: {
         flex: 1,
     },
-    mainView: {
-        marginTop: 20,
-    },
-    footer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-    },
     listContainer: {
         marginLeft: 10,
         borderWidth: 1,
         borderRadius: 5,
         padding: 3,
         paddingLeft: 10,
-        justifyContent: 'center',
-        flexGrow:0,
+        flexGrow: 0,
         width: 250,
         position: 'absolute',
-        left: configManager.isIos() ? configManager.dimension.width - 360 : configManager.dimension.width - 330,
         backgroundColor: stylesResources.color.white,
         elevation: 1,
-        zIndex: 2
-    }
+        zIndex: 2,
+    },
 });

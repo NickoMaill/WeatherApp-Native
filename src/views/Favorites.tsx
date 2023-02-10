@@ -9,7 +9,7 @@ import useStorage from '~/hooks/useStorage';
 import Loader from '~/components/common/Loader';
 import NoFavorites from '~/components/favorites/NoFavorites';
 import weatherService from '~/services/weatherService';
-import { FavoriteWeatherDto } from '~/contracts/weather';
+import { FavoriteWeatherDto } from '~/types/weather';
 import useNotification from '~/hooks/useNotification';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import Title from '~/components/common/Texted';

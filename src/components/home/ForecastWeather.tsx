@@ -2,7 +2,7 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { ForecastWeatherDto } from '~/contracts/weather';
+import { ForecastWeatherDto } from '~/types/weather';
 import { regularStyle } from '~/styles/regularStyle';
 import { Regular } from '../common/Texted';
 import ForecastWeatherDetails from './ForecastWeatherDetails';

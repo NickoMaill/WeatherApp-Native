@@ -1,6 +1,6 @@
 import { Latitude } from '~/components/common/SearchBar';
 import apiManager from '~/managers/apiManager';
-import { weatherRequestApi, weatherForecastResponseApi, WeatherCurrentResponseApi, WeatherTypeDto, ForecastWeatherDto, FavoriteWeatherDto } from '~/contracts/weather';
+import { weatherRequestApi, weatherForecastResponseApi, WeatherCurrentResponseApi, WeatherTypeDto, ForecastWeatherDto, FavoriteWeatherDto } from '~/types/weather';
 import configManager from '~/managers/configManager';
 
 export type WeatherParams = {

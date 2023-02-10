@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { WeatherContext } from '~/context/Context';
-import { weatherTypeDto } from '~/contracts/weather';
+import { weatherTypeDto } from '~/types/weather';
 import WeatherInfo from './WeatherInfo';
 
 export default function WeatherDetails({ data }: IWeatherDetails) {

@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 import { Dispatch, SetStateAction } from 'react';
-import { weatherTypeDto } from '../contracts/weather';
+import { weatherTypeDto } from '../types/weather';
 
 export interface AppContextInterface {
     backgroundImage: string;

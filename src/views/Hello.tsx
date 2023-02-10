@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
+import { Animated, Keyboard, StyleSheet, View } from 'react-native';
 import { WeatherContext } from '~/context/Context';
 import useNotification from '~/hooks/useNotification';
 import useStorage from '~/hooks/useStorage';
@@ -10,6 +10,7 @@ import Loader from '~/components/common/Loader';
 import { useNavigation } from '@react-navigation/native';
 import weatherService from '~/services/weatherService';
 import useResources from '~/hooks/useResources';
+import { transform } from '@babel/core';
 
 
 export default function Hello() {
@@ -26,11 +27,22 @@ export default function Hello() {
     
     // state --> start region ////////////////////////////////////
     const opacity = useRef(new Animated.Value(0)).current; // start point for animation
+    const position = useRef(new Animated.Value(0)).current;
     const message = [Resources.translate('hello.splashMessage1'), Resources.translate('hello.splashMessage2')];
     const [messageToDisplay, setMessageToDisplay] = useState<number>(0); // @index of message to display
     const [displayForm, setDisplayForm] = useState<boolean>(false); // @boolean to display search bar
     const [isLoading, setIsLoading] = useState<boolean>(false);
     // state --> end region //////////////////////////////////////
+    
+    Keyboard.addListener('keyboardDidShow', () => {
+        console.log('keybordOn')
+        onKeyboardOn();
+    });
+    
+    Keyboard.addListener('keyboardDidHide', () => {
+        console.log('keybordOff')
+        onKeyboardOff();
+    });
 
     // methods --> start region //////////////////////////////////
 
@@ -74,6 +86,22 @@ export default function Hello() {
         ]).start(() => setDisplayForm(true));
     };
 
+    const onKeyboardOn = () => {
+        return Animated.timing(position, {
+            toValue: - configManager.dimension.height / 2.5,
+            duration: 100,
+            useNativeDriver: true,
+        }).start();
+    }
+    
+    const onKeyboardOff = () => {
+        return Animated.timing(position, {
+            toValue: 0,
+            duration: 100,
+            useNativeDriver: true,
+        }).start();
+    }
+
     /**
      * @description Check if a city is choose, and call ->
      * {1} - weatherManager to get current weather by coordinate point
@@ -91,6 +119,7 @@ export default function Hello() {
         }
 
         setIsLoading(true);
+        fadeOut();
 
         try {
             const weather = await weatherService.getCurrentWeatherByCoordinate(coor.lon, coor.lat);
@@ -113,6 +142,14 @@ export default function Hello() {
         setTimeout(() => {
             setMessageToDisplay(1);
         }, 4000); // --> TODO set message to display with event instead of setTimeOut to prevent bad performance of the device
+
+        Keyboard.addListener('keyboardDidShow', () => {
+            onKeyboardOn();
+        });
+        
+        Keyboard.addListener('keyboardDidHide', () => {
+            onKeyboardOff();
+        });
     }, []);
 
     useEffect(() => {
@@ -134,9 +171,11 @@ export default function Hello() {
                             <Title style={styles.title}>{message[messageToDisplay]}</Title>
                         </Animated.View>
                     ) : (
-                        <Animated.View style={{ opacity }}>
-                            <Title style={{ color: 'black', fontSize: 30 }}>{Resources.translate('hello.chooseCity')}</Title>
-                            <SearchBar onPress={(coor) => onPress(coor).finally(() => Navigation.navigate('Home'))} />
+                        <Animated.View style={{ transform: [{ translateY: position }] }}>
+                            <Animated.View style={{ opacity }}>
+                                <Title style={{ fontSize: 30 }}>{Resources.translate('hello.chooseCity')}</Title>
+                                <SearchBar onPress={(coor) => onPress(coor).finally(() => Navigation.navigate('Home'))} />
+                            </Animated.View>
                         </Animated.View>
                     )}
                 </View>
@@ -153,7 +192,6 @@ const styles = StyleSheet.create({
         height: configManager.dimension.height,
     },
     title: {
-        color: 'black',
         textAlign: 'center',
         fontSize: 50,
     },

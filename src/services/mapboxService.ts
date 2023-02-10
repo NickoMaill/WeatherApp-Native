@@ -1,5 +1,5 @@
 import apiManager from '~/managers/apiManager';
-import { AutocompleteResponseApi } from '../contracts/mapbox';
+import { AutocompleteResponseApi } from '../types/mapbox';
 import configManager from '../managers/configManager';
 
 class MapboxModule {

@@ -15,9 +15,10 @@ export default function Splash() {
 
         if (isConfigured) {
             Context.setShowFooter(true);
+            Context.setIsConfigured(isConfigured);
             navigate.navigate('Home');
         } else {
-            navigate.navigate('Hello')
+            navigate.navigate('Hello');
         }
     };
 

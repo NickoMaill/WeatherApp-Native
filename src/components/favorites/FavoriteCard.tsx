@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { FavoriteWeatherDto } from '~/contracts/weather';
+import { FavoriteWeatherDto } from '~/types/weather';
 import stylesResources from '~/resources/stylesResources';
 import weatherService from '~/services/weatherService';
 import { regularStyle } from '../../styles/regularStyle';

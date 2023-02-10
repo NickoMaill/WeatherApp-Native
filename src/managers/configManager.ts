@@ -1,4 +1,4 @@
-import { IConfigEnv } from '../contracts/config';
+import { IConfigEnv } from '../types/config';
 import { Dimensions, Platform } from 'react-native';
 import { WEATHER_API_BASE_URL, WEATHER_API_KEY, NODE_ENV, MAPBOX_BASE_URL, MAPBOX_API_KEY } from '@env';
 

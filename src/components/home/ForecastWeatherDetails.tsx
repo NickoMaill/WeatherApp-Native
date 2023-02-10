@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { ForecastWeatherDto } from '~/contracts/weather';
+import { ForecastWeatherDto } from '~/types/weather';
 import { regularStyle } from '~/styles/regularStyle';
 import { frenchDays } from '~/utils/convertDays';
 import { displayPic } from '~/utils/displayWeatherPic';

@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import useStorage from '~/hooks/useStorage';
 import Loader from '~/components/common/Loader';
-import { ForecastWeatherDto, WeatherTypeDto } from '~/contracts/weather';
+import { ForecastWeatherDto, WeatherTypeDto } from '~/types/weather';
 import { WeatherContext } from '~/context/Context';
-import { BackHandler, StyleSheet, View } from 'react-native';
+import { BackHandler, ScrollView, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import weatherService from '~/services/weatherService';
 import SearchBar, { Latitude } from '~/components/common/SearchBar';
@@ -39,13 +39,21 @@ export default function HomePage({ navigation, route }: IHomeProps) {
         if(!isLoading && data) {
             setIsFavorites(!checkIfFavorite(data.cityId))
         }
+
+        if (data && Context.backgroundImage.length === 0) {
+            Context.setBackgroundImage(data.icon);
+        }
+
+        if (route.params) {
+            onSelectedFavorite(route.params.cityId).finally(() => setIsLoading(false));
+        }
     })
 
     const preventBackTooForward = () => {
-        if (Navigation.getState().index === 1) {
+        if (Navigation.getState().routes[Navigation.getState().index].name === 'Home') {
+            console.log('ok');
             BackHandler.exitApp();
         }
-        return true;
     };
 
     const preventNonConfiguredApp = async () => {
@@ -123,6 +131,7 @@ export default function HomePage({ navigation, route }: IHomeProps) {
         await weatherService.getCurrentWeatherByCityId(cityId, chooseUnits).then((res) => {
             setData(res)
             checkIfFavorite(res.cityId);
+            Context.setBackgroundImage(res.icon)
         });
         await weatherService.getWeatherByCityId(cityId, chooseUnits).then((res) =>setForecastData(res));
     }
@@ -202,12 +211,6 @@ export default function HomePage({ navigation, route }: IHomeProps) {
         }
     }, [units])
 
-    useEffect(() => {
-        if (route.params) {
-            onSelectedFavorite(route.params.cityId).finally(() => setIsLoading(false));
-        }
-    }, [route.params])
-
     return (
         <>
             {isLoading ? (
@@ -215,15 +218,15 @@ export default function HomePage({ navigation, route }: IHomeProps) {
             ) : (
                 <GestureRecognizer style={{ flex: 1 }} onSwipe={(gestureName) => onSwipe(gestureName)}>
                     <SafeAreaView style={styles.body}>
-                        <View>
-                            <SearchBar value={search} onPress={(coor) => onSearch(coor, units).finally(() => setIsLoading(false))} onChange={(text: string) => setSearch(text)} />
                             <View>
-                                <MainWeather data={data} valueMetric={units} onChangeMetric={onMetricChange} valueFavorites={isFavorites} onChangeFavorites={(bool) => onFavoriteChange(bool)} />
-                                <WeatherDetails data={data} />
-                                <ForecastWeather data={forecastData} />
-                                <Sunrise data={data} />
+                                <SearchBar value={search} onPress={(coor) => onSearch(coor, units).finally(() => setIsLoading(false))} onChange={(text: string) => setSearch(text)} />
+                                <View>
+                                    <MainWeather data={data} valueMetric={units} onChangeMetric={onMetricChange} valueFavorites={isFavorites} onChangeFavorites={(bool) => onFavoriteChange(bool)} />
+                                    <WeatherDetails data={data} />
+                                    <ForecastWeather data={forecastData} />
+                                    <Sunrise data={data} />
+                                </View>
                             </View>
-                        </View>
                     </SafeAreaView>
                 </GestureRecognizer>
             )}

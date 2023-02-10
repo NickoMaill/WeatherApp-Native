@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, Switch, Text, View } from 'react-native';
-import { WeatherTypeDto } from '~/contracts/weather';
+import { WeatherTypeDto } from '~/types/weather';
 import { regularStyle } from '~/styles/regularStyle';
 import { displayPic } from '~/utils/displayWeatherPic';
 import { Regular } from '../common/Texted';

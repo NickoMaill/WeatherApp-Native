@@ -1,9 +1,10 @@
 import { ImageSourcePropType, ImageStyle, StyleProp } from 'react-native';
+import { StackNavigatorParamList } from '~/types/navigation';
 
 export type FooterNavLink = {
     iconPath: ImageSourcePropType;
     style: StyleProp<ImageStyle>;
-    to: 'Home' | 'Favorites' | 'Setup';
+    to: keyof StackNavigatorParamList;
 };
 
 class NavigationResources {

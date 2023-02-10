@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ImageBackground, StatusBar, StyleSheet } from 'react-native';
+import { AppState, ImageBackground, ScrollView, StatusBar, StyleSheet } from 'react-native';
 import { WeatherContext } from './src/context/Context';
 import assetsWeatherManager from './src/managers/assetsWeatherManager';
 import 'react-native-gesture-handler';
@@ -15,6 +15,7 @@ import 'moment/locale/fr';
 import 'moment/locale/en-gb';
 import moment from 'moment';
 import './src/resources/i18n/i18n'
+import stylesResources from '~/resources/stylesResources';
 
 export default function App() {
     const isResourcesLoaded = useCachedResources();
@@ -24,12 +25,14 @@ export default function App() {
     const [favorites, setFavorites] = useState<string[]>([]);
     const [showFooter, setShowFooter] = useState<boolean>(false);
 
-    moment.locale('fr');
-
-    NavigationBar.addVisibilityListener(({ visibility }) => {
-        if (visibility === 'visible') {
+    AppState.addEventListener('change', (s) => {
+        if (s === 'active') {
+            NavigationBar.setVisibilityAsync('hidden');
+            NavigationBar.setBehaviorAsync('overlay-swipe');
         }
-    });
+    })
+
+    moment.locale('fr');
 
     const value: AppContextInterface = {
         backgroundImage,
@@ -43,11 +46,6 @@ export default function App() {
         showFooter,
         setShowFooter,
     };
-
-    useEffect(() => {
-        NavigationBar.setVisibilityAsync('hidden');
-        NavigationBar.setBehaviorAsync('overlay-swipe');
-    }, []);
     
     if (!isResourcesLoaded) {
         return null
@@ -79,5 +77,6 @@ const styles = StyleSheet.create({
     droidSafeArea: {
         flex: 1,
         paddingTop: configManager.isIos() ? -48 : 0,
+        backgroundColor: stylesResources.color.black
     },
 });

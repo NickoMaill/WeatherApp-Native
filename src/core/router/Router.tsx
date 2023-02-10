@@ -10,6 +10,7 @@ import HomePage from '~/views/HomePage';
 import Setup from '~/views/Setup';
 import { RootStackParamList } from './routerType';
 import Hello from '~/views/Hello';
+import { ScrollView } from 'react-native';
 
 export default function Router() {
     const Stack = createNativeStackNavigator<RootStackParamList>();
