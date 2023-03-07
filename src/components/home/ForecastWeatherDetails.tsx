@@ -12,8 +12,12 @@ export default function ForecastWeatherDetails({ data }: IForecastWeatherDetails
     const fullDate: Date = new Date(data.date * 1000);
     return (
         <View style={styles.forecastContainer}>
-            <Title style={{ fontSize: 15, textTransform: 'uppercase' }}>{moment(data.date * 1000).format('ddd').substring(0, 3)}</Title>
-            <Image  style={{ width: 30, height: 30, tintColor: "#fff" }} source={displayPic(data.icon)} />
+            <Title style={{ fontSize: 15, textTransform: 'uppercase' }}>
+                {moment(data.date * 1000)
+                    .format('ddd')
+                    .substring(0, 3)}
+            </Title>
+            <Image style={{ width: 30, height: 30, tintColor: '#fff' }} source={displayPic(data.icon)} />
             <Regular style={{ textAlign: 'right' }}>{Math.round(data.temp)} °</Regular>
         </View>
     );
@@ -29,6 +33,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 25,
         paddingBottom: 8,
         borderRadius: 10,
-        marginTop: 10
-    }
-})
+        marginTop: 10,
+    },
+});

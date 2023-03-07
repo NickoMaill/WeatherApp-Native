@@ -1,21 +1,23 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import LottieView from 'lottie-react-native';
 import { useNavigation } from '@react-navigation/native';
 import useStorage from '~/hooks/useStorage';
-import { WeatherContext } from '~/context/Context';
 import { View } from 'react-native';
+import { useAppDispatch } from '~/store/storeHooks';
+import { showFooterSlice } from '~/store/AppContext/showFooter';
+import { isAppConfiguredSlice } from '~/store/AppContext/isAppConfigured';
 
 export default function Splash() {
     const navigate = useNavigation();
     const Storage = useStorage();
-    const Context = useContext(WeatherContext);
+    const Dispatch = useAppDispatch();
 
     const navigateToNextStep = async () => {
         const isConfigured = await Storage.isConfigured();
 
         if (isConfigured) {
-            Context.setShowFooter(true);
-            Context.setIsConfigured(isConfigured);
+            Dispatch(showFooterSlice.actions.setToTrue());
+            Dispatch(isAppConfiguredSlice.actions.setValue(isConfigured));
             navigate.navigate('Home');
         } else {
             navigate.navigate('Hello');

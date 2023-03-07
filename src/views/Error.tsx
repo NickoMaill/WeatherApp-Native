@@ -3,8 +3,26 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { Regular } from '~/components/common/Texted';
 
 export default function Error() {
-    const onRefresh = () => {};
+    // singleton --> start region ////////////////////////////////
+    // singleton --> end region //////////////////////////////////
 
+    // hooks --> start region ////////////////////////////////////
+    // hooks --> end region //////////////////////////////////////
+
+    // state --> start region ////////////////////////////////////
+    // state --> end region //////////////////////////////////////
+
+    // listeners --> start region ////////////////////////////////
+    // listeners --> end region //////////////////////////////////
+
+    // methods --> start region //////////////////////////////////
+    const onRefresh = () => {};
+    // methods --> end region ////////////////////////////////////
+
+    // useEffect --> start region ////////////////////////////////
+    // useEffect --> end region //////////////////////////////////
+
+    // render --> start region ///////////////////////////////////
     return (
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <Regular style={{ textAlign: 'center' }}>oups une erreur est survenu... veuillez recharger l'application</Regular>
@@ -13,4 +31,8 @@ export default function Error() {
             </TouchableOpacity>
         </View>
     );
+    // render --> end region /////////////////////////////////////
 }
+
+// styles --> start region //////////////////////////////////////
+// styles --> end region ////////////////////////////////////////

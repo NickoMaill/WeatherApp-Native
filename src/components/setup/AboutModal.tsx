@@ -1,11 +1,11 @@
-import React from 'react'
+import React from 'react';
 import FullModalLayout from '../common/FullModalLayout';
 import Title from '../common/Texted';
 
 // singleton --> start region ////////////////////////////////////
 // singleton --> end region //////////////////////////////////////
 
-export default function AboutModal ({ onPress }: IAboutModal) {
+export default function AboutModal({ onPress }: IAboutModal) {
     // state --> start region ////////////////////////////////////
     // state --> end region //////////////////////////////////////
 
@@ -20,15 +20,15 @@ export default function AboutModal ({ onPress }: IAboutModal) {
 
     // render --> start region ///////////////////////////////////
     return (
-        <FullModalLayout title='A propos du développeur' onPressClose={onPress}>
+        <FullModalLayout title="A propos du développeur" onPressClose={onPress}>
             <Title>Bonjour</Title>
         </FullModalLayout>
-    );;
+    );
     // render --> end region /////////////////////////////////////
 }
 
 // props interface --> start region //////////////////////////////
 interface IAboutModal {
-    onPress: () => void
+    onPress: () => void;
 }
 // props interface --> end region ////////////////////////////////

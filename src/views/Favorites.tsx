@@ -1,15 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Animated, SafeAreaView, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Animated, View } from 'react-native';
 import FavoriteCard from '~/components/favorites/FavoriteCard';
-import { WeatherContext } from '~/context/Context';
-import { getWeather } from '~/utils/weatherRequest';
 import { useNavigation } from '@react-navigation/native';
-import TranslateView from '~/components/animations/TranslateView';
 import useStorage from '~/hooks/useStorage';
 import Loader from '~/components/common/Loader';
 import NoFavorites from '~/components/favorites/NoFavorites';
-import weatherService from '~/services/weatherService';
-import { FavoriteWeatherDto } from '~/types/weather';
 import useNotification from '~/hooks/useNotification';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import Title from '~/components/common/Texted';
@@ -89,7 +84,7 @@ export default function Favorites() {
                                     isLoadingDelete={isLoadingDelete}
                                     cityId={fav}
                                     index={i}
-                                    onCrossPress={() => deleteFavorite(fav).then(() => Toast.displayInfo('Favori supprimé', `vous avez supprimé votre favori`))}
+                                    onCrossPress={() => deleteFavorite(fav).then(() => Toast.displayInfo('Favori supprimé', 'vous avez supprimé votre favori'))}
                                     onPressButton={() => getFullData(fav)}
                                 />
                             );

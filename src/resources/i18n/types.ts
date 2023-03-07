@@ -18,15 +18,15 @@ export type TranslationResourcesType = {
         toast: {};
     };
     setup: {
-        title
-        about
-        defaultCity
-        defaultUnits
-        languageSelection
+        title;
+        about;
+        defaultCity;
+        defaultUnits;
+        languageSelection;
         toast: {
-            successLanguage
-            successUnits
-            successCity 
+            successLanguage;
+            successUnits;
+            successCity;
         };
     };
 };

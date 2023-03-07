@@ -1,32 +1,53 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Image, StyleSheet, TextInput, View, TouchableOpacity, Keyboard, FlatList, Dimensions, BackHandler } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, TextInput, View, TouchableOpacity, Keyboard, FlatList, BackHandler } from 'react-native';
 import { PlaceDetails } from '~/types/mapbox';
 import mapboxModule from '~/services/mapboxService';
 import ItemListAutoComplete from './ItemListAutoComplete';
-import { FontAwesome } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import SearchIcon from 'react-native-vector-icons/AntDesign';
 import stylesResources from '~/resources/stylesResources';
-import { WeatherContext } from '~/context/Context';
-import configManager from '~/managers/configManager';
+import { useAppSelector } from '~/store/storeHooks';
 
 export type Latitude = { lon?: number; lat?: number };
 
 export default function SearchBar({ onPress, onChange, value }: ISearchBar) {
-    const Context = useContext(WeatherContext);
+    // singleton --> start region ////////////////////////////////
+    // singleton --> end region //////////////////////////////////
+
+    // hooks --> start region ////////////////////////////////////
+    // hooks --> end region //////////////////////////////////////
+
+    // state --> start region ////////////////////////////////////
+    const isAppConfigured = useAppSelector((state) => state.isAppConfigured.value);
     const [city, setCity] = useState<string>('');
+    // const [displayList, setDisplayList] = useState<boolean>(false);
     const [autocompleteCities, setAutocompleteCities] = useState<PlaceDetails[] | null>(null);
     const [coordinate, setCoordinate] = useState<Latitude | null>(null);
     const [buttonColor, setButtonColor] = useState<string>(stylesResources.color.black);
+    // state --> end region //////////////////////////////////////
 
+    // listeners --> start region ////////////////////////////////
     BackHandler.addEventListener('hardwareBackPress', () => {
+        Keyboard.dismiss();
         if (autocompleteCities !== null) {
             setAutocompleteCities(null);
         }
-        return true
-    })
+        return true;
+    });
+    // listeners --> end region //////////////////////////////////
 
-    const handleCityChange = async (e: string) => {
+    // methods --> start region //////////////////////////////////
+    /**
+     * @name HandleCityCHange
+     * @description method that search city
+     * @param {string} e 
+     * @return {void}
+     */
+    const handleCityChange = async (e: string): Promise<void> => {
         setCity(e);
-        if (!city) return;
+        if (!city) {
+            return;
+        }
 
         const res = await mapboxModule.autoCompleteCity(city);
 
@@ -39,7 +60,7 @@ export default function SearchBar({ onPress, onChange, value }: ISearchBar) {
         }
     };
 
-    const onCitySelected = (i: number) => {
+    const onCitySelected = (i: number): void => {
         Keyboard.dismiss();
         const currentCoordinate = autocompleteCities[i].geometry.coordinates;
 
@@ -48,6 +69,10 @@ export default function SearchBar({ onPress, onChange, value }: ISearchBar) {
         setAutocompleteCities(null);
         setButtonColor(stylesResources.color.blue);
     };
+    // methods --> end region ////////////////////////////////////
+
+    // useEffect --> start region ////////////////////////////////
+    // useEffect --> end region //////////////////////////////////
 
     useEffect(() => {
         if (city.length < 1) {
@@ -55,16 +80,17 @@ export default function SearchBar({ onPress, onChange, value }: ISearchBar) {
             setCoordinate(null);
             setButtonColor(stylesResources.color.black);
         }
-        console.log(Context.isConfigured)
     }, [autocompleteCities]);
 
+    // render --> start region ///////////////////////////////////
     return (
         <>
             <View style={styles.sectionStyle}>
-                <Image style={styles.imageStyle} source={require('~/assets/pictures/search-interface-symbol.png')} />
+                <SearchIcon size={20} name='search1' style={{ marginLeft: 5 }}/>
                 <TextInput
                     autoComplete="off"
                     value={city}
+                    blurOnSubmit={false}
                     onChangeText={handleCityChange}
                     style={styles.inputSearch}
                     placeholder="Rechercher une ville"
@@ -72,12 +98,12 @@ export default function SearchBar({ onPress, onChange, value }: ISearchBar) {
                 />
                 <View style={{ alignItems: 'center' }}>
                     <TouchableOpacity onPress={() => onPress(coordinate)}>
-                        <FontAwesome size={30} style={{ paddingHorizontal: 3, paddingVertical: 5 }} color={buttonColor} name="arrow-circle-right" />
+                        <Icon size={30} style={{ marginRight: 3 }} color={buttonColor} name="arrow-circle-right" />
                     </TouchableOpacity>
                 </View>
             </View>
             {autocompleteCities && (
-                <View style={[styles.listContainer, { height: autocompleteCities.length - 1 * 50, top: Context.isConfigured ? 60 : 120, left: Context.isConfigured ? 40 : 0}]}>
+                <View style={[styles.listContainer, { height: autocompleteCities.length - 1 * 50, top: isAppConfigured ? 60 : 120, left: isAppConfigured ? 40 : 0 }]}>
                     <FlatList
                         data={autocompleteCities}
                         renderItem={(place) => <ItemListAutoComplete onPress={() => onCitySelected(place.index)} city={place.item.place_name} />}
@@ -87,7 +113,11 @@ export default function SearchBar({ onPress, onChange, value }: ISearchBar) {
             )}
         </>
     );
+    // render --> end region /////////////////////////////////////
 }
+
+// styles --> start region //////////////////////////////////////
+// styles --> end region ////////////////////////////////////////
 
 interface ISearchBar {
     onPress?: (latitude: Latitude) => void;

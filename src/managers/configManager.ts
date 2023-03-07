@@ -1,6 +1,6 @@
 import { IConfigEnv } from '../types/config';
 import { Dimensions, Platform } from 'react-native';
-import { WEATHER_API_BASE_URL, WEATHER_API_KEY, NODE_ENV, MAPBOX_BASE_URL, MAPBOX_API_KEY } from '@env';
+import { REACT_APP_WEATHER_API_BASE_URL, REACT_APP_WEATHER_API_KEY, NODE_ENV, REACT_APP_MAPBOX_BASE_URL, REACT_APP_MAPBOX_API_KEY } from '@env';
 
 const { width, height } = Dimensions.get('screen');
 class ConfigManager {
@@ -9,10 +9,10 @@ class ConfigManager {
     public get getConfig() {
         return {
             NODE_ENV,
-            MAPBOX_API_KEY,
-            MAPBOX_BASE_URL,
-            WEATHER_API_BASE_URL,
-            WEATHER_API_KEY,
+            MAPBOX_API_KEY: REACT_APP_MAPBOX_API_KEY,
+            MAPBOX_BASE_URL: REACT_APP_MAPBOX_BASE_URL,
+            WEATHER_API_BASE_URL: REACT_APP_WEATHER_API_BASE_URL,
+            WEATHER_API_KEY: REACT_APP_WEATHER_API_KEY,
         };
     }
 
@@ -32,14 +32,14 @@ class ConfigManager {
             height,
             os: Platform.OS,
             version: Platform.Version,
-        }
+        };
     }
 
     public get dimension() {
         return {
             width,
             height,
-        }
+        };
     }
 
     public isAndroid() {

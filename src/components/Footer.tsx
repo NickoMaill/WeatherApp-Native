@@ -1,14 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { StackNavigationState, useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { FlatList, Image, StyleSheet, TouchableOpacity, View, ListRenderItemInfo } from 'react-native';
 import { HomeScreenNavigationProp, StackNavigatorParamList } from '../types/navigation';
 import navigationResources, { FooterNavLink } from '../resources/navigationResources';
 import stylesResources from '~/resources/stylesResources';
-import { WeatherContext } from '~/context/Context';
+import { useAppDispatch } from '~/store/storeHooks';
+import { backgroundImageSlice } from '~/store/AppContext/backgroundImage';
 
 export default function Footer() {
     const navigation = useNavigation<HomeScreenNavigationProp>();
-    const Context = useContext(WeatherContext);
+    const Dispatch = useAppDispatch();
     const [currentSelected, setCurrentSelected] = useState<number>(1);
 
     const stylesNavigation = (screen: keyof StackNavigatorParamList, index: number) => {
@@ -25,30 +26,31 @@ export default function Footer() {
 
     useEffect(() => {
         navigation.addListener('state', (s) => {
-            const state = s.data.state
-            switch(state.routes[state.index].name) {
-                case 'Setup':
-                    setCurrentSelected(0);
-                    Context.setBackgroundImage('');
-                    break;
-                case 'Home':
-                    setCurrentSelected(1);
-                    break;
-                case 'Favorites':
-                    setCurrentSelected(2);
-                    break;
+            const state = s.data.state;
+            if (state) {
+                switch (state.routes[state.index].name) {
+                    case 'Setup':
+                        setCurrentSelected(0);
+                        Dispatch(backgroundImageSlice.actions.setDefaultBackground())
+                        break;
+                    case 'Home':
+                        setCurrentSelected(1);
+                        break;
+                    case 'Favorites':
+                        setCurrentSelected(2);
+                        break;
+                }
             }
-        })
-    }, [])
-    
+        });
+    }, []);
 
     return (
         <View style={styles.footer}>
-            <FlatList 
-                data={navigationResources.footerNavLink} 
-                renderItem={renderItem} 
-                keyExtractor={(_item, i) => i.toString()} 
-                extraData={currentSelected} 
+            <FlatList
+                data={navigationResources.footerNavLink}
+                renderItem={renderItem}
+                keyExtractor={(_item, i) => i.toString()}
+                extraData={currentSelected}
                 contentContainerStyle={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}
             />
         </View>
@@ -65,6 +67,6 @@ function ItemFooter({ onPress, backgroundColor, navLink, tintColor }) {
 
 const styles = StyleSheet.create({
     footer: {
-        marginBottom: 40
+        marginBottom: 40,
     },
 });

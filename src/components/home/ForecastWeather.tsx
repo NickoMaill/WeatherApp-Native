@@ -60,7 +60,7 @@ export default function ForecastWeather({ data }: IForecastWeather) {
 
     // useEffect --> start region ////////////////////////////////
     useEffect(() => {
-        setForecastData(generateTempAverage(4, data))
+        setForecastData(generateTempAverage(4, data));
     }, []);
 
     // useEffect --> end region //////////////////////////////////
