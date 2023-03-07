@@ -1,11 +1,11 @@
-import React from 'react'
+import React from 'react';
 import FullModalLayout from '../common/FullModalLayout';
 import Title from '../common/Texted';
 
 // singleton --> start region ////////////////////////////////////
 // singleton --> end region //////////////////////////////////////
 
-export default function DefaultUnitsModal ({ onPress }: IDefaultUnitsModal) {
+export default function DefaultUnitsModal({ onPress }: IDefaultUnitsModal) {
     // state --> start region ////////////////////////////////////
     // state --> end region //////////////////////////////////////
 
@@ -20,7 +20,7 @@ export default function DefaultUnitsModal ({ onPress }: IDefaultUnitsModal) {
 
     // render --> start region ///////////////////////////////////
     return (
-        <FullModalLayout title='Unité par défaut' onPressClose={onPress}>
+        <FullModalLayout title="Unité par défaut" onPressClose={onPress}>
             <Title>Bonjour</Title>
         </FullModalLayout>
     );
@@ -29,6 +29,6 @@ export default function DefaultUnitsModal ({ onPress }: IDefaultUnitsModal) {
 
 // props interface --> start region //////////////////////////////
 interface IDefaultUnitsModal {
-    onPress: () => void
+    onPress: () => void;
 }
 // props interface --> end region ////////////////////////////////

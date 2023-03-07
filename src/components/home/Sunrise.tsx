@@ -6,7 +6,6 @@ import { WeatherTypeDto } from '~/types/weather';
 import { regularStyle } from '~/styles/regularStyle';
 import { Regular } from '../common/Texted';
 
-
 export default function Sunrise({ data }: ISunrise) {
     return (
         <View style={{ justifyContent: 'space-around', flexDirection: 'row', marginTop: 40 }}>
@@ -23,5 +22,5 @@ export default function Sunrise({ data }: ISunrise) {
 }
 
 interface ISunrise {
-    data: WeatherTypeDto
+    data: WeatherTypeDto;
 }

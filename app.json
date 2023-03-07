@@ -1,37 +1,4 @@
 {
-    "expo": {
-        "name": "WeatherApp",
-        "slug": "WeatherApp",
-        "version": "1.0.0",
-        "orientation": "portrait",
-        "icon": "./src/assets/icon.png",
-        "entryPoint": "./App.tsx",
-        "userInterfaceStyle": "light",
-        "splash": {
-            "image": "./src/assets/expoSplash.png",
-            "resizeMode": "contain",
-            "backgroundColor": "#ffffff"
-        },
-        "androidNavigationBar": {
-           "visible": "immersive",
-           "barStyle": "#ffffff",
-           "backgroundColor": "#00000000"
-        },
-        "updates": {
-            "fallbackToCacheTimeout": 0
-        },
-        "assetBundlePatterns": ["**/*"],
-        "ios": {
-            "supportsTablet": true
-        },
-        "android": {
-            "adaptiveIcon": {
-                "foregroundImage": "./src/assets/adaptive-icon.png",
-                "backgroundColor": "#FFFFFF"
-            }
-        },
-        "web": {
-            "favicon": "./src/assets/favicon.png"
-        }
-    }
+  "name": "weather",
+  "displayName": "weather"
 }

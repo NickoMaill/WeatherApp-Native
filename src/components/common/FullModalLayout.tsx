@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Title from './Texted';
-import { AntDesign } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/AntDesign';
 import stylesResources from '~/resources/stylesResources';
 
 // singleton --> start region ////////////////////////////////////
@@ -22,11 +22,11 @@ export default function FullModalLayout({ title, children, onPressClose }: IFull
 
     // render --> start region ///////////////////////////////////
     return (
-        <View style={{ flex: 1,  backgroundColor: stylesResources.color.black }}>
+        <View style={{ flex: 1, backgroundColor: stylesResources.color.black }}>
             <View style={styles.modalTitleContainer}>
                 <Title>{title}</Title>
                 <TouchableOpacity style={{ marginRight: 10, position: 'absolute', right: 0 }} onPress={onPressClose}>
-                    <AntDesign name="close" size={24} color={stylesResources.color.white} />
+                    <Icon name="close" size={24} color={stylesResources.color.white} />
                 </TouchableOpacity>
             </View>
             <View>{children}</View>
@@ -44,10 +44,10 @@ interface IFullModalLayout {
 // props interface --> end region ////////////////////////////////
 
 const styles = StyleSheet.create({
-    modalTitleContainer: { 
-        backgroundColor: '#1F1F1F', 
+    modalTitleContainer: {
+        backgroundColor: '#1F1F1F',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center'
-    }
-})
+        justifyContent: 'center',
+    },
+});

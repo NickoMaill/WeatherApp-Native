@@ -18,7 +18,7 @@ export default function WeatherDetails({ data }: IWeatherDetails) {
 }
 
 interface IWeatherDetails {
-    data: weatherTypeDto
+    data: weatherTypeDto;
 }
 
 const styles = StyleSheet.create({

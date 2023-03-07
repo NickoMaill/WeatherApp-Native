@@ -13,7 +13,7 @@ export function Thin(props: TextProps) {
 }
 
 export default function Title(props: TextProps) {
-    return <Bold {...props} style={[styles.title, props.style]}/>;
+    return <Bold {...props} style={[styles.title, props.style]} />;
 }
 
 const styles = StyleSheet.create({

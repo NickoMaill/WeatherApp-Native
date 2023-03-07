@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import configManager from '~/managers/configManager';
-import { regularStyle } from '~/styles/regularStyle';
 import stylesResources from '~/resources/stylesResources';
 import { Regular } from './Texted';
 
@@ -33,7 +32,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
-        paddingBottom: 40
+        paddingBottom: 40,
     },
     loaderMessage: {
         color: stylesResources.color.white,

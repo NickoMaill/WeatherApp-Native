@@ -189,6 +189,6 @@ export type FavoriteWeatherDto = {
     city: string;
     country: string;
     temp: number;
-    icon: string
+    icon: string;
     description: string;
-}
+};

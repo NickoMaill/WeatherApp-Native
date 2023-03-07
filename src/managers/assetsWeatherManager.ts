@@ -1,4 +1,4 @@
-class assetsDisplayManager {
+class assetsWeatherManager {
     public displayIcon(picCode: string) {
         switch (picCode) {
             case '01d':
@@ -86,4 +86,4 @@ class assetsDisplayManager {
     }
 }
 
-export default new assetsDisplayManager();
+export default new assetsWeatherManager();

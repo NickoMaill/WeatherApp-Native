@@ -4,9 +4,9 @@ import langResource from './fr/fr.json';
 
 export const resources = {
     fr: {
-        translation: langResource
-    }
-}
+        translation: langResource,
+    },
+};
 
 i18n.use(initReactI18next).init({
     compatibilityJSON: 'v3',
@@ -14,6 +14,6 @@ i18n.use(initReactI18next).init({
     lng: 'fr',
     fallbackLng: 'fr',
     interpolation: {
-      escapeValue: false,
+        escapeValue: false,
     },
 });

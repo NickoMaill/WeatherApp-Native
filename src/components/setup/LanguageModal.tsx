@@ -1,11 +1,11 @@
-import React from 'react'
+import React from 'react';
 import FullModalLayout from '../common/FullModalLayout';
 import Title from '../common/Texted';
 
 // singleton --> start region ////////////////////////////////////
 // singleton --> end region //////////////////////////////////////
 
-export default function LanguageModal ({ onPress }: ILanguageModal) {
+export default function LanguageModal({ onPress }: ILanguageModal) {
     // state --> start region ////////////////////////////////////
     // state --> end region //////////////////////////////////////
 
@@ -20,7 +20,7 @@ export default function LanguageModal ({ onPress }: ILanguageModal) {
 
     // render --> start region ///////////////////////////////////
     return (
-        <FullModalLayout title='titre ici' onPressClose={onPress}>
+        <FullModalLayout title="titre ici" onPressClose={onPress}>
             <Title>Bonjour</Title>
         </FullModalLayout>
     );
@@ -29,6 +29,6 @@ export default function LanguageModal ({ onPress }: ILanguageModal) {
 
 // props interface --> start region //////////////////////////////
 interface ILanguageModal {
-    onPress: () => void
+    onPress: () => void;
 }
 // props interface --> end region ////////////////////////////////

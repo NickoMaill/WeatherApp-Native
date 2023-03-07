@@ -1,12 +1,11 @@
-import configManager from "./configManager";
-
+import configManager from './configManager';
 
 const weatherUrl = configManager.getConfig.WEATHER_API_BASE_URL;
 const mapUrl = configManager.getConfig.MAPBOX_BASE_URL;
 
 class ApiManager {
-    public async get<T>(host: "map" | "weather", route: string, headersRequest?: HeadersInit): Promise<T> {
-        const apiHost = host === "map" ? mapUrl : weatherUrl;
+    public async get<T>(host: 'map' | 'weather', route: string, headersRequest?: HeadersInit_): Promise<T> {
+        const apiHost = host === 'map' ? mapUrl : weatherUrl;
         const headers = new Headers();
 
         for (const header in headersRequest) {
@@ -20,16 +19,17 @@ class ApiManager {
         };
 
         const url = `${apiHost}/${route}`;
-        
+
         const request = await fetch(url, options);
+        console.log("request", request.ok);
         const response = await request.json();
 
-        return response;
+        return response as T;
     }
 
-    public async getFile<T>(host: "map" | "weather", route: string, headersRequest?: HeadersInit): Promise<Blob> {
+    public async getFile(host: 'map' | 'weather', route: string, headersRequest?: HeadersInit_): Promise<Blob> {
         const headers = new Headers();
-        const apiHost = host === "map" ? mapUrl : weatherUrl;
+        const apiHost = host === 'map' ? mapUrl : weatherUrl;
 
         for (const header in headersRequest) {
             headers.set(header, headersRequest[header]);
@@ -49,9 +49,9 @@ class ApiManager {
         return response;
     }
 
-    public async post<T>(host: "map" | "weather", route: string, body?: T, formData?: FormData, headersRequest?: HeadersInit) {
+    public async post<T>(host: 'map' | 'weather', route: string, body?: T, formData?: FormData, headersRequest?: HeadersInit_) {
         const headers = new Headers();
-        const apiHost = host === "map" ? mapUrl : weatherUrl;
+        const apiHost = host === 'map' ? mapUrl : weatherUrl;
 
         for (const header in headersRequest) {
             headers.set(header, headersRequest[header]);
@@ -66,7 +66,6 @@ class ApiManager {
             headers,
             body: JSON.stringify(body),
         };
-        
 
         const url = `${apiHost}/${route}`;
         const request = await fetch(url, options);
@@ -75,9 +74,9 @@ class ApiManager {
         return response;
     }
 
-    public async put<T>(host: "map" | "weather", route: string, body?: T, formData?: FormData, headersRequest?: HeadersInit) {
+    public async put<T>(host: 'map' | 'weather', route: string, body?: T, formData?: FormData, headersRequest?: HeadersInit_) {
         const headers = new Headers();
-        const apiHost = host === "map" ? mapUrl : weatherUrl;
+        const apiHost = host === 'map' ? mapUrl : weatherUrl;
 
         for (const header in headersRequest) {
             headers.set(header, headersRequest[header]);
@@ -100,10 +99,10 @@ class ApiManager {
         return response;
     }
 
-    public async delete<T>(host: "map" | "weather", route: string, body?: T, headersRequest?: HeadersInit) {
+    public async delete<T>(host: 'map' | 'weather', route: string, body?: T, headersRequest?: HeadersInit_) {
         const headers = new Headers();
-        const apiHost = host === "map" ? mapUrl : weatherUrl;
-        
+        const apiHost = host === 'map' ? mapUrl : weatherUrl;
+
         for (const header in headersRequest) {
             headers.set(header, headersRequest[header]);
         }

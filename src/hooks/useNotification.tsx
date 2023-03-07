@@ -1,4 +1,4 @@
-import Toast, { BaseToast, ErrorToast, InfoToast, SuccessToast, ToastConfig } from 'react-native-toast-message'
+import Toast, { BaseToast, ErrorToast, InfoToast, SuccessToast, ToastConfig } from 'react-native-toast-message';
 
 export default function useNotification(): IUseNotification {
     const displaySuccess = (title: string, message: string, onPress?: () => void) => {
@@ -7,9 +7,9 @@ export default function useNotification(): IUseNotification {
             text1: `✅ ${title}`,
             text2: message,
             onPress: () => Toast.hide(),
-            onHide: onPress
-        })
-    }
+            onHide: onPress,
+        });
+    };
 
     const displayError = (title: string, message: string, onPress?: () => void) => {
         Toast.show({
@@ -17,9 +17,9 @@ export default function useNotification(): IUseNotification {
             text1: `⛔️ ${title}`,
             text2: message,
             onPress: () => Toast.hide(),
-            onHide: onPress
-        })
-    }
+            onHide: onPress,
+        });
+    };
 
     const displayInfo = (title: string, message: string, onPress?: () => void) => {
         Toast.show({
@@ -27,9 +27,9 @@ export default function useNotification(): IUseNotification {
             text1: `ℹ️ ${title}`,
             text2: message,
             onPress: () => Toast.hide(),
-            onHide: onPress
-        })
-    }
+            onHide: onPress,
+        });
+    };
 
     const displayWarning = (title: string, message: string, onPress?: () => void) => {
         Toast.show({
@@ -37,9 +37,9 @@ export default function useNotification(): IUseNotification {
             text1: `⚠️ ${title}`,
             text2: message,
             onPress: () => Toast.hide(),
-            onHide: onPress
-        })
-    }
+            onHide: onPress,
+        });
+    };
 
     return { displaySuccess, displayError, displayInfo, displayWarning };
 }
@@ -51,21 +51,11 @@ interface IUseNotification {
     displayWarning: (title: string, message: string, onPress?: () => void) => void;
 }
 
-type toastType = 'success' | 'error' | 'info' | 'warning'
+type toastType = 'success' | 'error' | 'info' | 'warning';
 
 export const customToastConfig: ToastConfig = {
-    success: (props) => (
-        <SuccessToast {...props}/>
-    ),
-    error: (props) => (
-        <ErrorToast {...props} style={{ borderLeftColor: '#DE0300' }} />
-    ),
-    info: (props) => (
-        <InfoToast {...props}/>
-    ),
-    warning: (props) => (
-        <BaseToast {...props} style={{ borderLeftColor: '#F6BD15' }} />
-    )
-
-
-}
+    success: (props) => <SuccessToast {...props} />,
+    error: (props) => <ErrorToast {...props} style={{ borderLeftColor: '#DE0300' }} />,
+    info: (props) => <InfoToast {...props} />,
+    warning: (props) => <BaseToast {...props} style={{ borderLeftColor: '#F6BD15' }} />,
+};
