@@ -22,7 +22,7 @@ export default function Setup() {
     // singleton --> start region ////////////////////////////////
     const setupBlanks: SetupBlanksType[] = [
         { label: Resources.translate('setup.about'), to: 'about' },
-        { label: Resources.translate('setup.defaultCity'), to: 'defaultCity' },
+        { label: Resources.translate('setup.defaultCity.title'), to: 'defaultCity' },
         { label: Resources.translate('setup.defaultUnits'), to: 'units' },
         { label: Resources.translate('setup.languageSelection'), to: 'language' },
     ];
@@ -41,7 +41,7 @@ export default function Setup() {
      * @name OpenCloseModal
      * @description method that open or close modal
      * @return {void}
-    */
+     */
     const openCloseModale = (): void => {
         setIsOpen(!isOpen);
     };
@@ -51,7 +51,7 @@ export default function Setup() {
      * @description method that display the correct modal content
      * @param {RecursiveKeyOf<SetupModalContentType>} to
      * @return {void}
-    */
+     */
     const displayContent = (to: RecursiveKeyOf<SetupModalContentType>): void => {
         setCurrentContentModal(to);
         openCloseModale();

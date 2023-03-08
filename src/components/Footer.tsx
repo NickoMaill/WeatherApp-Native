@@ -31,7 +31,7 @@ export default function Footer() {
                 switch (state.routes[state.index].name) {
                     case 'Setup':
                         setCurrentSelected(0);
-                        Dispatch(backgroundImageSlice.actions.setDefaultBackground())
+                        Dispatch(backgroundImageSlice.actions.setBlackBackground());
                         break;
                     case 'Home':
                         setCurrentSelected(1);

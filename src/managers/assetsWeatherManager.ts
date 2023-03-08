@@ -80,6 +80,10 @@ class assetsWeatherManager {
                 return require('../assets/icons/mist.png');
             case '50n':
                 return require('../assets/icons/mist.png');
+            case '99b':
+                return require('../assets/pictures/blackScreen.jpg');
+            case '99w':
+                return require('../assets/pictures/whiteScreen.jpeg');
             default:
                 return require('../assets/icons/mist.png');
         }

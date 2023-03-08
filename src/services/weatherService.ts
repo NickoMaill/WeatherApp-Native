@@ -41,10 +41,9 @@ class WeatherService extends ServiceBase {
     }
 
     public async getCurrentWeatherByCityId(cityId: number, units: 'metric' | 'imperial' = 'metric', lang: 'en' | 'fr' = 'fr'): Promise<WeatherTypeDto> {
-        const data = await this.asServicePromise<WeatherCurrentResponseApi>(apiManager.get<WeatherCurrentResponseApi>(
-            'weather',
-            `weather?id=${cityId}&units=${units}&lang=${lang}&appid=${configManager.getConfig.WEATHER_API_KEY}`
-        ));
+        const data = await this.asServicePromise<WeatherCurrentResponseApi>(
+            apiManager.get<WeatherCurrentResponseApi>('weather', `weather?id=${cityId}&units=${units}&lang=${lang}&appid=${configManager.getConfig.WEATHER_API_KEY}`)
+        );
 
         return this.formatCurrentData(data);
     }

@@ -12,6 +12,9 @@ import useResources from '~/hooks/useResources';
 import { useAppDispatch } from '~/store/storeHooks';
 import { isAppConfiguredSlice } from '~/store/AppContext/isAppConfigured';
 import { showFooterSlice } from '~/store/AppContext/showFooter';
+import { AppError, ErrorTypeEnum } from '~/core/appError';
+import { backgroundImageSlice } from '~/store/AppContext/backgroundImage';
+import { WeatherTypeDto } from '~/types/weather';
 
 export default function Hello() {
     // singleton --> start region ////////////////////////////////////
@@ -32,13 +35,14 @@ export default function Hello() {
     const [messageToDisplay, setMessageToDisplay] = useState<number>(0); // @index of message to display
     const [displayForm, setDisplayForm] = useState<boolean>(false); // @boolean to display search bar
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [weatherData, setWeatherData] = useState<WeatherTypeDto | null>(null);
     // state --> end region //////////////////////////////////////
 
     // listeners --> start region //////////////////////////////////
     Keyboard.addListener('keyboardDidShow', () => {
         onKeyboardOn();
     });
-    
+
     Keyboard.addListener('keyboardDidHide', () => {
         onKeyboardOff();
     });
@@ -103,34 +107,36 @@ export default function Hello() {
 
     /**
      * @description Check if a city is choose, and call ->
-     * {1} - weatherManager to get current weather by coordinate point
-     * {2} - storage for add cityId in 'favorites' slot
-     * {3} - storage for set App configured in 'isAppConfigured' slot
+     * {*} - weatherManager to get current weather by coordinate point
+     * {*} - storage for add cityId in 'favorites' slot
+     * {*} - storage for set App configured in 'isAppConfigured' slot
      * @param {Latitude} coor - and longitude object
      * @return {void}
      */
     const onPress = async (coor: Latitude): Promise<void> => {
         if (!coor) {
             Toast.displayWarning(Resources.translate('common.toast.noCityTitle'), Resources.translate('common.toast.noCityMessage'));
-            return;
+            throw new AppError(ErrorTypeEnum.Functional, 'no city', 'no_city');
         }
 
         setIsLoading(true);
         fadeOut();
 
-        try {
-            const weather = await weatherService.getCurrentWeatherByCoordinate(coor.lon, coor.lat);
-            await Storage.addToFavorite([weather.cityId]);
-            await Storage.setDefaultCity(weather.cityId);
-            await Storage.setAppConfigured(true);
-            Dispatch(isAppConfiguredSlice.actions.setToTrue());
-            Dispatch(showFooterSlice.actions.setToTrue());
-        } catch (err) {
-            console.error(err);
-        } finally {
+        await weatherService.getCurrentWeatherByCoordinate(coor.lon, coor.lat)
+        .then((res) => setWeatherData(res))
+        .catch((err) => { 
             setIsLoading(false);
-        }
+            throw new AppError(ErrorTypeEnum.Technical, 'an error happened') 
+        })
     };
+
+    const configureApp = async () => {
+        await Storage.addToFavorite([weatherData.cityId]);
+        await Storage.setDefaultCity(weatherData.cityId);
+        await Storage.setAppConfigured(true);
+        Dispatch(isAppConfiguredSlice.actions.setToTrue());
+        Dispatch(showFooterSlice.actions.setToTrue());
+    }
     // methods --> end region ////////////////////////////////////
 
     // useEffect --> start region ////////////////////////////////
@@ -150,10 +156,19 @@ export default function Hello() {
     }, []);
 
     useEffect(() => {
+        Dispatch(backgroundImageSlice.actions.setBlackBackground());
         if (displayForm) {
             fadeIn().start(); // --> Display search form (with fadeIn animation effect)
         }
     }, [displayForm]);
+
+    useEffect(() => {
+        if (weatherData) {
+            configureApp()
+            .then(() => Navigation.navigate('Home'))
+            .finally(() => setIsLoading(false));
+        }
+    }, [weatherData])
     // useEffect --> end region //////////////////////////////////
 
     // render --> start region ///////////////////////////////////
@@ -171,7 +186,7 @@ export default function Hello() {
                         <Animated.View style={{ transform: [{ translateY: position }] }}>
                             <Animated.View style={{ opacity }}>
                                 <Title style={{ fontSize: 30 }}>{Resources.translate('hello.chooseCity')}</Title>
-                                <SearchBar onPress={(coor) => onPress(coor).finally(() => Navigation.navigate('Home'))} />
+                                <SearchBar onPress={(coor) => onPress(coor)} />
                             </Animated.View>
                         </Animated.View>
                     )}

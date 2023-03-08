@@ -43,11 +43,31 @@ export default function useStorage(): IUseStorage {
         return cityId;
     };
 
+    const isDefaultCity = async (cityId: number): Promise<boolean> => {
+        const storedId = await storageManager.getItem<number>('defaultCity');
+
+        if (storedId === cityId) {
+            return true
+        } else {
+            return false
+        }
+    }
+
     const setDefaultCity = async (cityId: number): Promise<void> => {
         await storageManager.setItem<number>('defaultCity', cityId);
     };
 
-    return { getFavorite, addToFavorite, removeFavorite, removeAllFavorites, isConfigured, setAppConfigured, getDefaultCity, setDefaultCity };
+    return { 
+        getFavorite, 
+        addToFavorite, 
+        removeFavorite, 
+        removeAllFavorites, 
+        isConfigured, 
+        setAppConfigured, 
+        isDefaultCity,
+        getDefaultCity, 
+        setDefaultCity 
+    };
 }
 
 interface IUseStorage {
@@ -57,6 +77,7 @@ interface IUseStorage {
     removeAllFavorites: () => Promise<void>;
     isConfigured: () => Promise<boolean>;
     setAppConfigured: (bool: boolean) => Promise<void>;
+    isDefaultCity: (cityId: number) => Promise<boolean>;
     getDefaultCity: () => Promise<number>;
     setDefaultCity: (cityId: number) => Promise<void>;
 }

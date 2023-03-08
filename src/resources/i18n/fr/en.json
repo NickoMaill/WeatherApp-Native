@@ -1,0 +1,37 @@
+{
+    "common": {
+        "toast": {
+            "noCityTitle": "No city selected",
+            "noCityMessage": "you have to choose a first before access to weather",
+            "favoriteAddedTitle": "Favorite added",
+            "favoriteAddedMessage": "You've added {{city}} to favorites, check its weather !",
+            "favoriteDeletedTitle": "Favorite deleted !",
+            "favoriteDeletedMessage": "you've deleted {{city}}"
+        }
+    },
+    "hello": {
+        "splashMessage1": "Welcome to My Weather",
+        "splashMessage2": "This is a test App",
+        "chooseCity": "Choose a City"
+    },
+    "home": {},
+    "favorites": {
+        "yourFavorites": "Your Favorites",
+        "toast": {
+            "deletedTitle": "Favorites deleted",
+            "deletedContent": "Favorite successful deleted"
+        }
+    },
+    "setup": {
+        "title": "Setup",
+        "about": "Words from the dev team",
+        "defaultCity": "Default City",
+        "defaultUnits": "Default units",
+        "languageSelection": "Language setup",
+        "toast": {
+            "successLanguage": "Language successful updated",
+            "successUnits": "Units successful updated",
+            "successCity": "Default city successful updated"
+        }
+    }
+}

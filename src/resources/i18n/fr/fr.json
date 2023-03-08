@@ -7,8 +7,9 @@
             "favoriteAddedMessage": "vous avez ajouté {{city}} a vos favoris, consultez sa météo a tout moment",
             "favoriteDeletedTitle": "Favori supprimé !",
             "favoriteDeletedMessage": "vous avez supprimé {{city}}"
-
-        }
+        },
+        "yes": "oui",
+        "no": "non"
     },
     "hello": {
         "splashMessage1": "Bienvenu sur WeatherApp",
@@ -16,10 +17,23 @@
         "chooseCity": "Choisissez une ville"
     },
     "home": {},
+    "favorites": {
+        "yourFavorites": "Vos Favoris",
+        "toast": {
+            "deletedTitle": "Favori supprimé",
+            "deletedContent": "vous avez supprimé votre favori avec succès"
+        }
+    },
     "setup": {
         "title": "Réglages",
         "about": "A propos du développeur",
-        "defaultCity": "Ville par défaut",
+        "defaultCity": {
+            "title": "Ville par défaut",
+            "modalTitle": "Choisissez votre ville par default",
+            "citySample": "ville par default : {{city}}",
+            "preventTitle": "Êtes vous sûr ?",
+            "preventMessage": "Voulez vous réellement définir {{city}}, {{country}} comme ville par default ?"
+        },
         "defaultUnits": "Unité par défaut",
         "languageSelection": "Sélection de la langue",
         "toast": {

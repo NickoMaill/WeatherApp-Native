@@ -17,6 +17,7 @@ import { IHomeProps } from '~/core/router/routerType';
 import useResources from '~/hooks/useResources';
 import { useAppDispatch, useAppSelector } from '~/store/storeHooks';
 import { backgroundImageSlice } from '~/store/AppContext/backgroundImage';
+import stylesResources from '~/resources/stylesResources';
 
 export default function HomePage({ navigation, route }: IHomeProps) {
     // singleton --> start region ////////////////////////////////
@@ -61,7 +62,7 @@ export default function HomePage({ navigation, route }: IHomeProps) {
             setIsFavorites(!checkIfFavorite(data.cityId));
         }
 
-        if (data && backgroundImage.length === 0) {
+        if (data && (backgroundImage === stylesResources.backgroundImageCode.black || backgroundImage === stylesResources.backgroundImageCode.white)) {
             Dispatch(backgroundImageSlice.actions.setBackground(data.icon));
         }
 
@@ -146,13 +147,16 @@ export default function HomePage({ navigation, route }: IHomeProps) {
     const getWeather = async (cityId: number): Promise<void> => {
         const chooseUnits = units ? 'metric' : 'imperial';
 
-        await weatherService.getCurrentWeatherByCityId(cityId, chooseUnits).then((res) => {
-            setData(res);
-            checkIfFavorite(res.cityId);
-            Dispatch(backgroundImageSlice.actions.setBackground(res.icon));
-        }).catch((err) => {
-            navigation.navigate('Error');
-        })
+        await weatherService
+            .getCurrentWeatherByCityId(cityId, chooseUnits)
+            .then((res) => {
+                setData(res);
+                checkIfFavorite(res.cityId);
+                Dispatch(backgroundImageSlice.actions.setBackground(res.icon));
+            })
+            .catch((err) => {
+                navigation.navigate('Error');
+            });
         await weatherService.getWeatherByCityId(cityId, chooseUnits).then((res) => setForecastData(res));
     };
 
@@ -184,7 +188,7 @@ export default function HomePage({ navigation, route }: IHomeProps) {
         if (!defaultWeather) {
             await Storage.setAppConfigured(false);
             Navigation.navigate('Hello');
-            Dispatch(backgroundImageSlice.actions.setDefaultBackground());
+            Dispatch(backgroundImageSlice.actions.setWhiteBackground());
             return;
         }
 

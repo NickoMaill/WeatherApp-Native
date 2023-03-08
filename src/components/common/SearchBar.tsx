@@ -40,7 +40,7 @@ export default function SearchBar({ onPress, onChange, value }: ISearchBar) {
     /**
      * @name HandleCityCHange
      * @description method that search city
-     * @param {string} e 
+     * @param {string} e
      * @return {void}
      */
     const handleCityChange = async (e: string): Promise<void> => {
@@ -86,7 +86,7 @@ export default function SearchBar({ onPress, onChange, value }: ISearchBar) {
     return (
         <>
             <View style={styles.sectionStyle}>
-                <SearchIcon size={20} name='search1' style={{ marginLeft: 5 }}/>
+                <SearchIcon size={20} name="search1" style={{ marginLeft: 5 }} />
                 <TextInput
                     autoComplete="off"
                     value={city}

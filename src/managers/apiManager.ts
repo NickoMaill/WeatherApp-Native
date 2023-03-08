@@ -21,7 +21,6 @@ class ApiManager {
         const url = `${apiHost}/${route}`;
 
         const request = await fetch(url, options);
-        console.log("request", request.ok);
         const response = await request.json();
 
         return response as T;

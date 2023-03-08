@@ -20,7 +20,7 @@ export default function Router() {
 
     return (
         <NavigationContainer theme={{ ...DefaultTheme, colors: { ...DefaultTheme.colors, background: 'transparent' } }}>
-            <ImageBackground source={backgroundImage ? assetsWeatherManager.displayBackground(backgroundImage) : require('../../assets/pictures/blackScreen.jpg')} style={styles.image}>
+            <ImageBackground source={assetsWeatherManager.displayBackground(backgroundImage)} style={styles.image}>
                 <Stack.Navigator screenOptions={{ headerShown: false, gestureEnabled: false, gestureDirection: 'horizontal' }}>
                     <Stack.Screen name="Splash" component={Splash} />
                     <Stack.Screen name="Hello" component={Hello} />

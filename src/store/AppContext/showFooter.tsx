@@ -6,8 +6,8 @@ interface ShowFooterState {
 }
 
 const initialState: ShowFooterState = {
-    value: true,
-}
+    value: false,
+};
 
 export const showFooterSlice = createSlice({
     name: 'showFooter',

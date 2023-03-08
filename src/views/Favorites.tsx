@@ -8,16 +8,20 @@ import NoFavorites from '~/components/favorites/NoFavorites';
 import useNotification from '~/hooks/useNotification';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import Title from '~/components/common/Texted';
+import useResources from '~/hooks/useResources';
+import storageManager from '~/managers/storageManager';
+import { AppError, ErrorTypeEnum } from '~/core/appError';
 
 export default function Favorites() {
     const Navigation = useNavigation();
     const Storage = useStorage();
     const Toast = useNotification();
+    const Resources = useResources();
 
-    const [favoritesData, setFavoritesData] = useState([]);
     const [favorites, setFavorites] = useState<number[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isLoadingDelete, setIsLoadingDelete] = useState<boolean>(false);
+    const [defaultCity, setDefaultCity] = useState<number | null>(null);
 
     const getFullData = (cityId: number) => {
         Navigation.navigate('Home', { cityId });
@@ -37,26 +41,31 @@ export default function Favorites() {
 
     const deleteFavorite = async (id: number) => {
         setIsLoadingDelete(true);
-        const defaultWeather = await Storage.getDefaultCity();
 
-        if (id === defaultWeather) {
+        if (id === defaultCity) {
             Toast.displayWarning('Suppression impossible', 'vous ne pouvez pas supprimer votre ville par défaut');
             setIsLoadingDelete(false);
-            return;
+            throw new AppError(ErrorTypeEnum.Functional, 'cannot delete favorite')
         }
-        await Storage.removeFavorite(favorites, id);
+        await Storage.removeFavorite(favorites, id)
+        .then(() => Toast.displayInfo(Resources.translate('favorites.toast.deletedTitle'), Resources.translate('favorites.toast.deletedContent'))
+    )
 
         const newFavorites = await Storage.getFavorite();
         setFavorites(newFavorites);
         setIsLoadingDelete(false);
     };
 
+    const onChangeDefault = async (cityId: number) => {
+        await Storage.setDefaultCity(cityId).then(() => setDefaultCity(cityId));
+    }
+
     const animationSequence = () => {
         Animated.sequence([]).start();
     };
 
     const onSwipe = (gestureName: string) => {
-        // const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
+        // TODO --> to type
         switch (gestureName) {
             case 'SWIPE_RIGHT':
                 Navigation.navigate('Home');
@@ -66,6 +75,7 @@ export default function Favorites() {
     };
 
     useEffect(() => {
+        Storage.getDefaultCity().then((res) => setDefaultCity(res));
         checkFavorites().finally(() => setIsLoading(false));
     }, []);
 
@@ -74,17 +84,19 @@ export default function Favorites() {
             {!isLoading ? (
                 <View>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                        <Title style={{ fontSize: 20 }}>Vos Favoris</Title>
+                        <Title style={{ fontSize: 20 }}>{Resources.translate('favorites.yourFavorites')}</Title>
                     </View>
                     {favorites.length > 0 ? (
                         favorites.map((fav, i) => {
                             return (
                                 <FavoriteCard
                                     key={i}
+                                    onDefaultButton={() => onChangeDefault(fav)}
+                                    isDefaultCity={fav === defaultCity}
                                     isLoadingDelete={isLoadingDelete}
                                     cityId={fav}
                                     index={i}
-                                    onCrossPress={() => deleteFavorite(fav).then(() => Toast.displayInfo('Favori supprimé', 'vous avez supprimé votre favori'))}
+                                    onCrossPress={() => deleteFavorite(fav)}
                                     onPressButton={() => getFullData(fav)}
                                 />
                             );

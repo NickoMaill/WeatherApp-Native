@@ -7,8 +7,10 @@ import { regularStyle } from '../../styles/regularStyle';
 import { displayPic } from '../../utils/displayWeatherPic';
 import { Regular } from '../common/Texted';
 import Title from '../common/Texted';
+import Icon from "react-native-vector-icons/AntDesign"
+import Icon2 from "react-native-vector-icons/Entypo"
 
-export default function FavoriteCard({ cityId, index, onCrossPress, onPressButton, isLoadingDelete }: IFavoriteCard) {
+export default function FavoriteCard({ cityId, index, onCrossPress, onPressButton, isLoadingDelete, isDefaultCity, onDefaultButton }: IFavoriteCard) {
     const color = ['#00A8F4', '#CDDC39', '#607D8A', '#00A8F4', '#673AB6', '#ed9c10', '#ed577d', '#3f3c1a'];
 
     const [data, setData] = useState<FavoriteWeatherDto | null>(null);
@@ -41,13 +43,18 @@ export default function FavoriteCard({ cityId, index, onCrossPress, onPressButto
                             <Regular style={[regularStyle.mainFont, { fontSize: 15 }]}>{data.description}</Regular>
                         </View>
                     </View>
-                    {!isLoadingDelete ? (
-                        <TouchableOpacity onPress={onCrossPress}>
-                            <Image style={styles.closeCross} source={require('../../assets/icons/cross.png')} />
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity onPress={onDefaultButton}>
+                            <Icon2 color={isDefaultCity ? stylesResources.color.warn : stylesResources.color.white} size={40} name='location-pin' />
                         </TouchableOpacity>
-                    ) : (
-                        <ActivityIndicator size={60} color={stylesResources.color.white} />
-                    )}
+                        {!isLoadingDelete ? (
+                            <TouchableOpacity onPress={onCrossPress}>
+                                <Icon size={40} color={stylesResources.color.white} name="close"/>
+                            </TouchableOpacity>
+                        ) : (
+                            <ActivityIndicator size={60} color={stylesResources.color.white} />
+                        )}
+                    </View>
                 </>
             ) : (
                 <ActivityIndicator size={60} color={stylesResources.color.white} />
@@ -60,8 +67,10 @@ interface IFavoriteCard {
     cityId: number;
     index: number;
     isLoadingDelete: boolean;
+    isDefaultCity?: boolean;
     onCrossPress: () => void;
     onPressButton: () => void;
+    onDefaultButton: () => void;
 }
 
 const styles = StyleSheet.create({
@@ -78,9 +87,8 @@ const styles = StyleSheet.create({
         tintColor: '#fff',
         height: 40,
     },
-    closeCross: {
-        tintColor: '#fff',
-        width: 40,
-        height: 40,
-    },
+    buttonContainer: {
+        flexDirection: 'row',
+
+    }
 });
