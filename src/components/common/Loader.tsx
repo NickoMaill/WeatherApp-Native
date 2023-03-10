@@ -1,12 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react'
+import { ActivityIndicator } from 'react-native';
 import configManager from '~/managers/configManager';
 import stylesResources from '~/resources/stylesResources';
-import { Regular } from './Texted';
 
-export default function Loader() {
+// singleton --> start region ////////////////////////////////////
+// singleton --> end region //////////////////////////////////////
+
+export default function Loader ({}: ILoader) {
+    // state --> start region ////////////////////////////////////
     const [color, setColor] = useState<string>(stylesResources.color.blue);
+    // state --> end region //////////////////////////////////////
 
+    // hooks --> start region ////////////////////////////////////
+    // hooks --> end region //////////////////////////////////////
+
+    // methods --> start region //////////////////////////////////
+    // methods --> end region ////////////////////////////////////
+
+    // useEffect --> start region ////////////////////////////////
     useEffect(() => {
         let i = 0;
         const id = setInterval(() => {
@@ -15,28 +26,15 @@ export default function Loader() {
         }, 800);
         return () => clearInterval(id);
     }, []);
+    // useEffect --> end region //////////////////////////////////
 
+    // render --> start region ///////////////////////////////////
     return (
-        <View style={styles.spinnerContainer}>
-            <ActivityIndicator size={configManager.isAndroid() ? 100 : 'large'} color={color} hidesWhenStopped={false} />
-            <Regular style={styles.loaderMessage}>L'application est en cours de chargement ...</Regular>
-        </View>
+        <ActivityIndicator size={configManager.isAndroid() ? 100 : 'large'} color={color} hidesWhenStopped={false} />
     );
+    // render --> end region /////////////////////////////////////
 }
 
-const styles = StyleSheet.create({
-    spinnerContainer: {
-        backgroundColor: 'rgba(0, 0, 0, 0.6)',
-        height: configManager.dimension.height,
-        width: configManager.dimension.width,
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'absolute',
-        paddingBottom: 40,
-    },
-    loaderMessage: {
-        color: stylesResources.color.white,
-        marginTop: 30,
-        textAlign: 'center',
-    },
-});
+// props interface --> start region //////////////////////////////
+interface ILoader {}
+// props interface --> end region ////////////////////////////////

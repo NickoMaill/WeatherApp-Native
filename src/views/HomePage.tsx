@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useStorage from '~/hooks/useStorage';
-import Loader from '~/components/common/Loader';
+import LoaderFullWidth from '~/components/common/LoaderFullWidth';
 import { ForecastWeatherDto, WeatherTypeDto } from '~/types/weather';
 import { BackHandler, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -28,7 +28,7 @@ export default function HomePage({ navigation, route }: IHomeProps) {
     const Navigation = useNavigation();
     const Notification = useNotification();
     const Resources = useResources();
-    const Dispatch = useAppDispatch();
+    const DispatchReducer = useAppDispatch();
     // hooks --> end region //////////////////////////////////////
 
     // state --> start region ////////////////////////////////////
@@ -63,7 +63,7 @@ export default function HomePage({ navigation, route }: IHomeProps) {
         }
 
         if (data && (backgroundImage === stylesResources.backgroundImageCode.black || backgroundImage === stylesResources.backgroundImageCode.white)) {
-            Dispatch(backgroundImageSlice.actions.setBackground(data.icon));
+            DispatchReducer(backgroundImageSlice.actions.setBackground(data.icon));
         }
 
         if (route.params) {
@@ -152,7 +152,7 @@ export default function HomePage({ navigation, route }: IHomeProps) {
             .then((res) => {
                 setData(res);
                 checkIfFavorite(res.cityId);
-                Dispatch(backgroundImageSlice.actions.setBackground(res.icon));
+                DispatchReducer(backgroundImageSlice.actions.setBackground(res.icon));
             })
             .catch((err) => {
                 navigation.navigate('Error');
@@ -188,7 +188,7 @@ export default function HomePage({ navigation, route }: IHomeProps) {
         if (!defaultWeather) {
             await Storage.setAppConfigured(false);
             Navigation.navigate('Hello');
-            Dispatch(backgroundImageSlice.actions.setWhiteBackground());
+            DispatchReducer(backgroundImageSlice.actions.setWhiteBackground());
             return;
         }
 
@@ -325,7 +325,7 @@ export default function HomePage({ navigation, route }: IHomeProps) {
     return (
         <>
             {isLoading ? (
-                <Loader />
+                <LoaderFullWidth />
             ) : (
                 <GestureRecognizer style={{ flex: 1 }} onSwipe={(gestureName) => onSwipe(gestureName)}>
                     <SafeAreaView style={styles.body}>
@@ -334,8 +334,6 @@ export default function HomePage({ navigation, route }: IHomeProps) {
                             <View>
                                 <MainWeather
                                     data={data}
-                                    valueMetric={units}
-                                    onChangeMetric={onMetricChange}
                                     valueFavorites={isFavorites}
                                     onChangeFavorites={(bool) => onFavoriteChange(bool)}
                                 />

@@ -122,6 +122,28 @@ class ApiManager {
         const response = await request.json();
         return response;
     }
+
+    public async ping(host: 'map' | 'weather', route: string, headersRequest?: HeadersInit_): Promise<boolean> {
+        const apiHost = host === 'map' ? mapUrl : weatherUrl;
+        const headers = new Headers();
+
+        for (const header in headersRequest) {
+            headers.set(header, headersRequest[header]);
+        }
+
+        const options: RequestInit = {
+            method: 'GET',
+            credentials: 'include',
+            headers,
+        };
+
+        const url = `${apiHost}/${route}`;
+
+        const request = await fetch(url, options);
+        const response = request.ok;
+
+        return response;
+    }
 }
 
 export default new ApiManager();

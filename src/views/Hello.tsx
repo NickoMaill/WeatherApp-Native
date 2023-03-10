@@ -5,7 +5,7 @@ import useStorage from '~/hooks/useStorage';
 import configManager from '~/managers/configManager';
 import SearchBar, { Latitude } from '~/components/common/SearchBar';
 import Title from '~/components/common/Texted';
-import Loader from '~/components/common/Loader';
+import LoaderFullWidth from '~/components/common/LoaderFullWidth';
 import { useNavigation } from '@react-navigation/native';
 import weatherService from '~/services/weatherService';
 import useResources from '~/hooks/useResources';
@@ -25,7 +25,7 @@ export default function Hello() {
     const Storage = useStorage();
     const Navigation = useNavigation();
     const Resources = useResources();
-    const Dispatch = useAppDispatch();
+    const DispatchReducer = useAppDispatch();
     // hooks --> end region //////////////////////////////////////
 
     // state --> start region ////////////////////////////////////
@@ -134,8 +134,8 @@ export default function Hello() {
         await Storage.addToFavorite([weatherData.cityId]);
         await Storage.setDefaultCity(weatherData.cityId);
         await Storage.setAppConfigured(true);
-        Dispatch(isAppConfiguredSlice.actions.setToTrue());
-        Dispatch(showFooterSlice.actions.setToTrue());
+        DispatchReducer(isAppConfiguredSlice.actions.setToTrue());
+        DispatchReducer(showFooterSlice.actions.setToTrue());
     }
     // methods --> end region ////////////////////////////////////
 
@@ -156,7 +156,7 @@ export default function Hello() {
     }, []);
 
     useEffect(() => {
-        Dispatch(backgroundImageSlice.actions.setBlackBackground());
+        DispatchReducer(backgroundImageSlice.actions.setBlackBackground());
         if (displayForm) {
             fadeIn().start(); // --> Display search form (with fadeIn animation effect)
         }
@@ -175,7 +175,7 @@ export default function Hello() {
     return (
         <>
             {isLoading ? (
-                <Loader />
+                <LoaderFullWidth />
             ) : (
                 <View style={styles.animationContainer}>
                     {!displayForm ? (

@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Animated, View } from 'react-native';
+import { Animated, ScrollView, View } from 'react-native';
 import FavoriteCard from '~/components/favorites/FavoriteCard';
 import { useNavigation } from '@react-navigation/native';
 import useStorage from '~/hooks/useStorage';
-import Loader from '~/components/common/Loader';
+import LoaderFullWidth from '~/components/common/LoaderFullWidth';
 import NoFavorites from '~/components/favorites/NoFavorites';
 import useNotification from '~/hooks/useNotification';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import Title from '~/components/common/Texted';
 import useResources from '~/hooks/useResources';
-import storageManager from '~/managers/storageManager';
 import { AppError, ErrorTypeEnum } from '~/core/appError';
 
 export default function Favorites() {
@@ -45,11 +44,11 @@ export default function Favorites() {
         if (id === defaultCity) {
             Toast.displayWarning('Suppression impossible', 'vous ne pouvez pas supprimer votre ville par défaut');
             setIsLoadingDelete(false);
-            throw new AppError(ErrorTypeEnum.Functional, 'cannot delete favorite')
+            throw new AppError(ErrorTypeEnum.Functional, 'cannot delete favorite');
         }
-        await Storage.removeFavorite(favorites, id)
-        .then(() => Toast.displayInfo(Resources.translate('favorites.toast.deletedTitle'), Resources.translate('favorites.toast.deletedContent'))
-    )
+        await Storage.removeFavorite(favorites, id).then(() =>
+            Toast.displayInfo(Resources.translate('favorites.toast.deletedTitle'), Resources.translate('favorites.toast.deletedContent'))
+        );
 
         const newFavorites = await Storage.getFavorite();
         setFavorites(newFavorites);
@@ -58,7 +57,7 @@ export default function Favorites() {
 
     const onChangeDefault = async (cityId: number) => {
         await Storage.setDefaultCity(cityId).then(() => setDefaultCity(cityId));
-    }
+    };
 
     const animationSequence = () => {
         Animated.sequence([]).start();
@@ -81,33 +80,35 @@ export default function Favorites() {
 
     return (
         <GestureRecognizer style={{ flex: 1 }} onSwipe={(gestureName) => onSwipe(gestureName)}>
-            {!isLoading ? (
-                <View>
-                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                        <Title style={{ fontSize: 20 }}>{Resources.translate('favorites.yourFavorites')}</Title>
+            <ScrollView>
+                {!isLoading ? (
+                    <View>
+                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                            <Title style={{ fontSize: 20 }}>{Resources.translate('favorites.yourFavorites')}</Title>
+                        </View>
+                        {favorites.length > 0 ? (
+                            favorites.map((fav, i) => {
+                                return (
+                                    <FavoriteCard
+                                        key={i}
+                                        onDefaultButton={() => onChangeDefault(fav)}
+                                        isDefaultCity={fav === defaultCity}
+                                        isLoadingDelete={isLoadingDelete}
+                                        cityId={fav}
+                                        index={i}
+                                        onCrossPress={() => deleteFavorite(fav)}
+                                        onPressButton={() => getFullData(fav)}
+                                    />
+                                );
+                            })
+                        ) : (
+                            <NoFavorites />
+                        )}
                     </View>
-                    {favorites.length > 0 ? (
-                        favorites.map((fav, i) => {
-                            return (
-                                <FavoriteCard
-                                    key={i}
-                                    onDefaultButton={() => onChangeDefault(fav)}
-                                    isDefaultCity={fav === defaultCity}
-                                    isLoadingDelete={isLoadingDelete}
-                                    cityId={fav}
-                                    index={i}
-                                    onCrossPress={() => deleteFavorite(fav)}
-                                    onPressButton={() => getFullData(fav)}
-                                />
-                            );
-                        })
-                    ) : (
-                        <NoFavorites />
-                    )}
-                </View>
-            ) : (
-                <Loader />
-            )}
+                ) : (
+                    <LoaderFullWidth />
+                )}
+            </ScrollView>
         </GestureRecognizer>
     );
 }

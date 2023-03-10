@@ -56,6 +56,11 @@ class WeatherService extends ServiceBase {
         return this.formatCurrentFavoriteData(favorite);
     }
 
+    public async checkConnection() {
+        const ping = await this.asServicePromise(apiManager.ping('weather', `weather?appid=${configManager.getConfig.WEATHER_API_KEY}`));
+        return ping;
+    }
+
     private formatForecastData(x: weatherForecastResponseApi): ForecastWeatherDto[] {
         return x.list.map((y) => {
             return {

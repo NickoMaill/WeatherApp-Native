@@ -41,5 +41,8 @@
             "successUnits": "Unités changées avec succès",
             "successCity": "Ville par défaut changée avec succès"
         }
+    },
+    "error": {
+        "errorMessage": "oups une erreur est survenu... veuillez recharger l'application"
     }
 }

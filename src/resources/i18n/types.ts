@@ -44,4 +44,7 @@ export type TranslationResourcesType = {
             successCity;
         };
     };
+    error: {
+        errorMessage;
+    };
 };

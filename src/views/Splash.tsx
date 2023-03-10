@@ -11,14 +11,14 @@ import { backgroundImageSlice } from '~/store/AppContext/backgroundImage';
 export default function Splash() {
     const navigate = useNavigation();
     const Storage = useStorage();
-    const Dispatch = useAppDispatch();
+    const DispatchReducer = useAppDispatch();
 
     const navigateToNextStep = async () => {
         const isConfigured = await Storage.isConfigured();
 
         if (isConfigured) {
-            Dispatch(showFooterSlice.actions.setToTrue());
-            Dispatch(isAppConfiguredSlice.actions.setValue(isConfigured));
+            DispatchReducer(showFooterSlice.actions.setToTrue());
+            DispatchReducer(isAppConfiguredSlice.actions.setValue(isConfigured));
             navigate.navigate('Home');
         } else {
             navigate.navigate('Hello');
@@ -26,7 +26,7 @@ export default function Splash() {
     };
 
     useEffect(() => {
-        Dispatch(backgroundImageSlice.actions.setWhiteBackground());
+        DispatchReducer(backgroundImageSlice.actions.setWhiteBackground());
     }, []);
 
     return (
