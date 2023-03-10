@@ -98,42 +98,43 @@ export default function HomePage({ navigation, route }: IHomeProps) {
     };
 
     /**
-     * @name onMetricChange
-     * @description method that set units to C° {true} or F° {false}
-     * @return {void}
-     */
-    const onMetricChange = (): void => {
-        setUnits(!units);
-    };
-
-    /**
      * @name OnFavoriteChange
      * @description method that call addToFavorite method if {true} and deleteFavorite if {false}
      * @param {boolean} bool
-     * @return {void}
+     * @returns {void}
      */
-    const onFavoriteChange = (bool: boolean): void => {
-        setIsFavorites(!isFavorites);
-        if (bool) {
-            addToFavorite(data.cityId);
-        }
+    const onFavoriteChange = async (bool: boolean): Promise<void> => {
+        const favorites = await Storage.getFavorite();
+        const defaultCity = await Storage.getDefaultCity();
 
-        if (!bool) {
-            deleteFavorite(data.cityId);
+        if (favorites.length > 1 || defaultCity !== data.cityId) {
+            setIsFavorites(!isFavorites);
+
+            if (bool) {
+                addToFavorite(data.cityId);
+            }
+    
+            if (!bool) {
+                deleteFavorite(data.cityId);
+            }
+        } else {
+            Notification.displayError("Suppression impossible", "vous ne pouvez pas supprimer votre ville par défaut")
+            return;
         }
     };
 
     /**
      * @name RefreshCurrentWeather
      * @description method that refresh current weather when app parameter (units, etc, ...) change
-     * @return {void}
+     * @returns {void}
      */
     const refreshCurrentWeather = async (): Promise<void> => {
         setIsLoading(true);
-        const chooseUnit = units ? 'metric' : 'imperial';
 
+        const chooseUnit = units ? 'metric' : 'imperial';
         const weather = await weatherService.getCurrentWeatherByCityId(data.cityId, chooseUnit);
         const forecast = await weatherService.getWeatherByCityId(data.cityId, chooseUnit);
+        
         setForecastData(forecast);
         setData(weather);
     };
@@ -147,14 +148,13 @@ export default function HomePage({ navigation, route }: IHomeProps) {
     const getWeather = async (cityId: number): Promise<void> => {
         const chooseUnits = units ? 'metric' : 'imperial';
 
-        await weatherService
-            .getCurrentWeatherByCityId(cityId, chooseUnits)
+        await weatherService.getCurrentWeatherByCityId(cityId, chooseUnits)
             .then((res) => {
                 setData(res);
                 checkIfFavorite(res.cityId);
                 DispatchReducer(backgroundImageSlice.actions.setBackground(res.icon));
             })
-            .catch((err) => {
+            .catch((_err) => {
                 navigation.navigate('Error');
             });
         await weatherService.getWeatherByCityId(cityId, chooseUnits).then((res) => setForecastData(res));

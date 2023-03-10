@@ -1,41 +1,66 @@
+export enum WeatherCodeEnum {
+    SUN = '01d',
+    NIGHT_SUN = '01n',
+    CLOUDY = '02d',
+    NIGHT_CLOUDY = '02n',
+    CLOUDS = '03d',
+    NIGHT_CLOUDS = '03n',
+    BROKEN_CLOUDS = '04d',
+    NIGHT_BROKEN_CLOUDS = '04n',
+    RAINY = '09d',
+    NIGHT_RAINY = '09n',
+    RAIN = '10d',
+    NIGHT_RAIN = '10n',
+    THUNDER = '11d',
+    NIGHT_THUNDER = '11n',
+    SNOW = '13d',
+    NIGHT_SNOW = '13n',
+    MIST = '50d',
+    NIGHT_MIST = '50n',
+}
+
+export enum DefaultScreenEnum {
+    BLACK_SCREEN = '99b',
+    WHITE_SCREEN = '99w',
+}
 class assetsWeatherManager {
     public displayIcon(picCode: string) {
         switch (picCode) {
-            case '01d':
+            case WeatherCodeEnum.SUN:
                 return require('../assets/icons/sun.png');
-            case '01n':
+            case WeatherCodeEnum.NIGHT_SUN:
                 return require('../assets/icons/moon.png');
-            case '02d':
+            case WeatherCodeEnum.CLOUDY:
                 return require('../assets/icons/cloudy.png');
-            case '02n':
+            case WeatherCodeEnum.NIGHT_CLOUDY:
                 return require('../assets/icons/moon.png');
-            case '03d':
+            case WeatherCodeEnum.CLOUDS:
                 return require('../assets/icons/cloudy.png');
-            case '03n':
+            case WeatherCodeEnum.NIGHT_CLOUDS:
                 return require('../assets/icons/cloud.png');
-            case '04d':
+            case WeatherCodeEnum.BROKEN_CLOUDS:
                 return require('../assets/icons/cloud.png');
-            case '04n':
+            case WeatherCodeEnum.NIGHT_BROKEN_CLOUDS:
                 return require('../assets/icons/moon.png');
-            case '09d':
+            case WeatherCodeEnum.RAINY:
                 return require('../assets/icons/raining.png');
-            case '09n':
+            case WeatherCodeEnum.NIGHT_RAINY:
                 return require('../assets/icons/raining.png');
-            case '10d':
+            case WeatherCodeEnum.RAIN:
                 return require('../assets/icons/raining.png');
-            case '10n':
+            case WeatherCodeEnum.NIGHT_RAIN:
                 return require('../assets/icons/raining.png');
-            case '11d':
+            case WeatherCodeEnum.THUNDER:
                 return require('../assets/icons/storm.png');
-            case '11n':
+            case WeatherCodeEnum.NIGHT_THUNDER:
                 return require('../assets/icons/storm.png');
-            case '13d':
+            case WeatherCodeEnum.SNOW:
                 return require('../assets/icons/snow.png');
-            case '13n':
+            case WeatherCodeEnum.NIGHT_SNOW:
                 return require('../assets/icons/snow.png');
-            case '50d':
+            case WeatherCodeEnum.MIST:
                 return require('../assets/icons/mist.png');
-            case '50n':
+            case WeatherCodeEnum.NIGHT_MIST:
                 return require('../assets/icons/mist.png');
             default:
                 return require('../assets/icons/mist.png');
@@ -44,45 +69,45 @@ class assetsWeatherManager {
 
     public displayBackground(picCode: string) {
         switch (picCode) {
-            case '01d':
+            case WeatherCodeEnum.SUN:
                 return require('../assets/pictures/sun.jpg');
-            case '01n':
+            case WeatherCodeEnum.NIGHT_SUN:
                 return require('../assets/pictures/sun-night.jpeg');
-            case '02d':
+            case WeatherCodeEnum.CLOUDY:
                 return require('../assets/pictures/cloudy.jpg');
-            case '02n':
+            case WeatherCodeEnum.NIGHT_CLOUDY:
                 return require('../assets/pictures/moon-and-clouds.jpg');
-            case '03d':
+            case WeatherCodeEnum.CLOUDS:
                 return require('../assets/pictures/cloudy.jpg');
-            case '03n':
+            case WeatherCodeEnum.NIGHT_CLOUDS:
                 return require('../assets/pictures/moon-and-clouds.jpg');
-            case '04d':
+            case WeatherCodeEnum.BROKEN_CLOUDS:
                 return require('../assets/pictures/clouds.jpeg');
-            case '04n':
+            case WeatherCodeEnum.NIGHT_BROKEN_CLOUDS:
                 return require('../assets/pictures/moon-and-clouds.jpg');
-            case '09d':
+            case WeatherCodeEnum.RAINY:
                 return require('../assets/pictures/rain-day.jpg');
-            case '09n':
+            case WeatherCodeEnum.NIGHT_RAINY:
                 return require('../assets/pictures/rain-night.jpg');
-            case '10d':
+            case WeatherCodeEnum.RAIN:
                 return require('../assets/pictures/rain-day.jpg');
-            case '10n':
+            case WeatherCodeEnum.NIGHT_RAIN:
                 return require('../assets/pictures/rain-night.jpg');
-            case '11d':
+            case WeatherCodeEnum.THUNDER:
                 return require('../assets/pictures/thunder-and-lightning.jpg');
-            case '11n':
+            case WeatherCodeEnum.NIGHT_THUNDER:
                 return require('../assets/pictures/thunder-and-lightning.jpg');
-            case '13d':
+            case WeatherCodeEnum.SNOW:
                 return require('../assets/pictures/snow-day.jpg');
-            case '13n':
+            case WeatherCodeEnum.NIGHT_SNOW:
                 return require('../assets/pictures/snow-day.jpg');
-            case '50d':
+            case WeatherCodeEnum.MIST:
                 return require('../assets/icons/mist.png');
-            case '50n':
+            case WeatherCodeEnum.NIGHT_MIST:
                 return require('../assets/icons/mist.png');
-            case '99b':
+            case DefaultScreenEnum.BLACK_SCREEN:
                 return require('../assets/pictures/blackScreen.jpg');
-            case '99w':
+            case DefaultScreenEnum.WHITE_SCREEN:
                 return require('../assets/pictures/whiteScreen.jpeg');
             default:
                 return require('../assets/icons/mist.png');

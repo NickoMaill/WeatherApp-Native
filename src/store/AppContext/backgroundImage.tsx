@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import stylesResources from '~/resources/stylesResources';
+import { DefaultScreenEnum } from '~/managers/assetsWeatherManager';
 import { RootState } from '~/store';
 
 interface BackgroundImageState {
@@ -7,7 +7,7 @@ interface BackgroundImageState {
 }
 
 const initialState: BackgroundImageState = {
-    value: '99w',
+    value: DefaultScreenEnum.WHITE_SCREEN,
 };
 
 export const backgroundImageSlice = createSlice({
@@ -18,10 +18,10 @@ export const backgroundImageSlice = createSlice({
             state.value = action.payload;
         },
         setWhiteBackground: (state) => {
-            state.value = stylesResources.backgroundImageCode.white;
+            state.value = DefaultScreenEnum.WHITE_SCREEN;
         },
         setBlackBackground: (state) => {
-            state.value = stylesResources.backgroundImageCode.black;
+            state.value = DefaultScreenEnum.BLACK_SCREEN;
         },
     },
 });

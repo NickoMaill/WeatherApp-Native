@@ -29,7 +29,7 @@ export default function App() {
 
     // listeners --> start region ////////////////////////////////
     AppState.addEventListener('change', (s) => {
-        if (s === 'active') {
+        if (s === 'active' && configManager.isAndroid()) {
             SystemNavigationBar.navigationHide();
             SystemNavigationBar.setNavigationColor('#000000');
         }
@@ -38,8 +38,10 @@ export default function App() {
 
     // useEffect --> start region ////////////////////////////////
     useEffect(() => {
-        StatusBar.setBarStyle('light-content');
-        StatusBar.setBackgroundColor('#000000');
+        if (configManager.isAndroid()) {
+            StatusBar.setBarStyle('light-content');
+            StatusBar.setBackgroundColor('#000000');
+        }
         // Location.getCurrentPosition((info) => console.log(info));
     }, []);
     // useEffect --> end region //////////////////////////////////
