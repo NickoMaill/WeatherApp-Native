@@ -2,6 +2,27 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>AntDesign</string>
+		<string>Entypo</string>
+		<string>EvilIcons</string>
+		<string>Feather</string>
+		<string>FontAwesome</string>
+		<string>FontAwesome5_Brands</string>
+		<string>FontAwesome5_Regular</string>
+		<string>FontAwesome5_Solid</string>
+		<string>Fontisto</string>
+		<string>Fondation</string>
+		<string>Ionicons</string>
+		<string>MetrialCommunityIcons</string>
+		<string>MaterialIcons</string>
+		<string>Octicons</string>
+		<string>SimpleLineIcons</string>
+		<string>Zocial</string>
+	</array>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>

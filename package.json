@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "build-android-debug": "cd ./android && ./gradlew assembleDebug && cd ../",
+    "build-android-release": "./buildApp.sh",
     "allow-bash": "chmod +x ./buildApp.sh",
     "ios": "react-native run-ios",
     "lint": "eslint . --fix",
