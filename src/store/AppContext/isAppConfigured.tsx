@@ -7,7 +7,7 @@ interface IsAppConfiguredState {
 
 const initialState: IsAppConfiguredState = {
     value: true,
-}
+};
 
 export const isAppConfiguredSlice = createSlice({
     name: 'isAppConfigured',
@@ -20,8 +20,8 @@ export const isAppConfiguredSlice = createSlice({
             state.value = true;
         },
         setValue: (state, actions) => {
-            state.value = actions.payload
-        }
+            state.value = actions.payload;
+        },
     },
 });
 

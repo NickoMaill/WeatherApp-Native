@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useStorage from '~/hooks/useStorage';
-import Loader from '~/components/common/Loader';
+import LoaderFullWidth from '~/components/common/LoaderFullWidth';
 import { ForecastWeatherDto, WeatherTypeDto } from '~/types/weather';
 import { BackHandler, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -17,6 +17,7 @@ import { IHomeProps } from '~/core/router/routerType';
 import useResources from '~/hooks/useResources';
 import { useAppDispatch, useAppSelector } from '~/store/storeHooks';
 import { backgroundImageSlice } from '~/store/AppContext/backgroundImage';
+import stylesResources from '~/resources/stylesResources';
 
 export default function HomePage({ navigation, route }: IHomeProps) {
     // singleton --> start region ////////////////////////////////
@@ -27,7 +28,7 @@ export default function HomePage({ navigation, route }: IHomeProps) {
     const Navigation = useNavigation();
     const Notification = useNotification();
     const Resources = useResources();
-    const Dispatch = useAppDispatch();
+    const DispatchReducer = useAppDispatch();
     // hooks --> end region //////////////////////////////////////
 
     // state --> start region ////////////////////////////////////
@@ -61,8 +62,8 @@ export default function HomePage({ navigation, route }: IHomeProps) {
             setIsFavorites(!checkIfFavorite(data.cityId));
         }
 
-        if (data && backgroundImage.length === 0) {
-            Dispatch(backgroundImageSlice.actions.setBackground(data.icon));
+        if (data && (backgroundImage === stylesResources.backgroundImageCode.black || backgroundImage === stylesResources.backgroundImageCode.white)) {
+            DispatchReducer(backgroundImageSlice.actions.setBackground(data.icon));
         }
 
         if (route.params) {
@@ -97,42 +98,43 @@ export default function HomePage({ navigation, route }: IHomeProps) {
     };
 
     /**
-     * @name onMetricChange
-     * @description method that set units to C° {true} or F° {false}
-     * @return {void}
-     */
-    const onMetricChange = (): void => {
-        setUnits(!units);
-    };
-
-    /**
      * @name OnFavoriteChange
      * @description method that call addToFavorite method if {true} and deleteFavorite if {false}
      * @param {boolean} bool
-     * @return {void}
+     * @returns {void}
      */
-    const onFavoriteChange = (bool: boolean): void => {
-        setIsFavorites(!isFavorites);
-        if (bool) {
-            addToFavorite(data.cityId);
-        }
+    const onFavoriteChange = async (bool: boolean): Promise<void> => {
+        const favorites = await Storage.getFavorite();
+        const defaultCity = await Storage.getDefaultCity();
 
-        if (!bool) {
-            deleteFavorite(data.cityId);
+        if (favorites.length > 1 || defaultCity !== data.cityId) {
+            setIsFavorites(!isFavorites);
+
+            if (bool) {
+                addToFavorite(data.cityId);
+            }
+    
+            if (!bool) {
+                deleteFavorite(data.cityId);
+            }
+        } else {
+            Notification.displayError("Suppression impossible", "vous ne pouvez pas supprimer votre ville par défaut")
+            return;
         }
     };
 
     /**
      * @name RefreshCurrentWeather
      * @description method that refresh current weather when app parameter (units, etc, ...) change
-     * @return {void}
+     * @returns {void}
      */
     const refreshCurrentWeather = async (): Promise<void> => {
         setIsLoading(true);
-        const chooseUnit = units ? 'metric' : 'imperial';
 
+        const chooseUnit = units ? 'metric' : 'imperial';
         const weather = await weatherService.getCurrentWeatherByCityId(data.cityId, chooseUnit);
         const forecast = await weatherService.getWeatherByCityId(data.cityId, chooseUnit);
+        
         setForecastData(forecast);
         setData(weather);
     };
@@ -146,13 +148,15 @@ export default function HomePage({ navigation, route }: IHomeProps) {
     const getWeather = async (cityId: number): Promise<void> => {
         const chooseUnits = units ? 'metric' : 'imperial';
 
-        await weatherService.getCurrentWeatherByCityId(cityId, chooseUnits).then((res) => {
-            setData(res);
-            checkIfFavorite(res.cityId);
-            Dispatch(backgroundImageSlice.actions.setBackground(res.icon));
-        }).catch((err) => {
-            navigation.navigate('Error');
-        })
+        await weatherService.getCurrentWeatherByCityId(cityId, chooseUnits)
+            .then((res) => {
+                setData(res);
+                checkIfFavorite(res.cityId);
+                DispatchReducer(backgroundImageSlice.actions.setBackground(res.icon));
+            })
+            .catch((_err) => {
+                navigation.navigate('Error');
+            });
         await weatherService.getWeatherByCityId(cityId, chooseUnits).then((res) => setForecastData(res));
     };
 
@@ -184,7 +188,7 @@ export default function HomePage({ navigation, route }: IHomeProps) {
         if (!defaultWeather) {
             await Storage.setAppConfigured(false);
             Navigation.navigate('Hello');
-            Dispatch(backgroundImageSlice.actions.setDefaultBackground());
+            DispatchReducer(backgroundImageSlice.actions.setWhiteBackground());
             return;
         }
 
@@ -321,7 +325,7 @@ export default function HomePage({ navigation, route }: IHomeProps) {
     return (
         <>
             {isLoading ? (
-                <Loader />
+                <LoaderFullWidth />
             ) : (
                 <GestureRecognizer style={{ flex: 1 }} onSwipe={(gestureName) => onSwipe(gestureName)}>
                     <SafeAreaView style={styles.body}>
@@ -330,8 +334,6 @@ export default function HomePage({ navigation, route }: IHomeProps) {
                             <View>
                                 <MainWeather
                                     data={data}
-                                    valueMetric={units}
-                                    onChangeMetric={onMetricChange}
                                     valueFavorites={isFavorites}
                                     onChangeFavorites={(bool) => onFavoriteChange(bool)}
                                 />

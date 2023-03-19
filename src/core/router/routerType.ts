@@ -9,7 +9,7 @@ declare global {
 export type RootStackParamList = {
     Splash;
     Hello;
-    Home: { cityId?: number, isNewDefaultCity?: boolean };
+    Home: { cityId?: number; isNewDefaultCity?: boolean };
     Favorites;
     Setup;
     Error;

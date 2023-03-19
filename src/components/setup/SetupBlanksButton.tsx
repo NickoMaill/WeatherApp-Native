@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, StyleSheet, TouchableOpacity, TouchableOpacityProps, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 import { Regular } from '../common/Texted';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import stylesResources from '~/resources/stylesResources';
@@ -17,12 +17,12 @@ export default function SetupBlanksButton({ label, onPress, index, customStyle }
     // methods --> start region //////////////////////////////////
     const customBorderRadius = (): StyleProp<ViewStyle> => {
         const radius = 20;
-        if (index < 4) {
+        if (index < 3) {
             return {
                 borderTopLeftRadius: index === 0 ? radius : 0,
                 borderTopRightRadius: index === 0 ? radius : 0,
-                borderBottomLeftRadius: index === 3 ? radius : 0,
-                borderBottomRightRadius: index === 3 ? radius : 0,
+                borderBottomLeftRadius: index === 2 ? radius : 0,
+                borderBottomRightRadius: index === 2 ? radius : 0,
             };
         } else {
             return {

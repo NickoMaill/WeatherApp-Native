@@ -64,3 +64,4 @@ yarn-error.log
 
 # local
 *.local
+.vscode

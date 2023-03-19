@@ -8,6 +8,8 @@ export type TranslationResourcesType = {
             favoriteDeletedTitle;
             favoriteDeletedMessage;
         };
+        yes;
+        no;
     };
     hello: {
         splashMessage1;
@@ -17,10 +19,23 @@ export type TranslationResourcesType = {
     home: {
         toast: {};
     };
+    favorites: {
+        yourFavorites;
+        toast: {
+            deletedTitle;
+            deletedContent;
+        };
+    };
     setup: {
         title;
         about;
-        defaultCity;
+        defaultCity: {
+            title;
+            modalTitle;
+            citySample;
+            preventTitle;
+            preventMessage;
+        };
         defaultUnits;
         languageSelection;
         toast: {
@@ -28,5 +43,8 @@ export type TranslationResourcesType = {
             successUnits;
             successCity;
         };
+    };
+    error: {
+        errorMessage;
     };
 };

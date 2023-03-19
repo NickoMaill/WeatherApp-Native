@@ -12,9 +12,13 @@ class ServiceBase {
     }
 
     protected reject<TResult>(error: any = null): Promise<TResult> {
-        if (error && error.type) return Promise.reject(error);
+        if (error && error.type) {
+            return Promise.reject(error);
+        }
 
-        if (!error.status) return Promise.reject(new AppError(ErrorTypeEnum.Undefined, error.message));
+        if (!error.status) {
+            return Promise.reject(new AppError(ErrorTypeEnum.Undefined, error.message));
+        }
 
         let type = ErrorTypeEnum.Undefined;
 
@@ -36,7 +40,7 @@ class ServiceBase {
                 break;
         }
 
-        const apiError = error.result
+        const apiError = error.result;
         console.log('error', apiError);
         return Promise.reject(new AppError(type, apiError.message, apiError.errorCode, apiError.data));
     }

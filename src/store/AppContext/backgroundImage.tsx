@@ -1,14 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { DefaultScreenEnum } from '~/managers/assetsWeatherManager';
 import { RootState } from '~/store';
 
-
 interface BackgroundImageState {
-    value: string | null;
+    value: string;
 }
 
 const initialState: BackgroundImageState = {
-    value: null,
-}
+    value: DefaultScreenEnum.WHITE_SCREEN,
+};
 
 export const backgroundImageSlice = createSlice({
     name: 'backgroundImage',
@@ -17,12 +17,15 @@ export const backgroundImageSlice = createSlice({
         setBackground: (state, action: PayloadAction<string>) => {
             state.value = action.payload;
         },
-        setDefaultBackground: (state) => {
-            state.value = null;
-        }
+        setWhiteBackground: (state) => {
+            state.value = DefaultScreenEnum.WHITE_SCREEN;
+        },
+        setBlackBackground: (state) => {
+            state.value = DefaultScreenEnum.BLACK_SCREEN;
+        },
     },
 });
 
-export const { setBackground, setDefaultBackground } = backgroundImageSlice.actions;
+export const { setBackground, setWhiteBackground, setBlackBackground } = backgroundImageSlice.actions;
 export const selectBackgroundImage = (state: RootState) => state.backgroundImage.value;
 export default backgroundImageSlice.reducer;

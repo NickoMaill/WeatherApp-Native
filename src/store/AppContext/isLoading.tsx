@@ -7,7 +7,7 @@ interface IsLoadingState {
 
 const initialState: IsLoadingState = {
     value: true,
-}
+};
 
 export const isLoadingSlice = createSlice({
     name: 'isLoading',

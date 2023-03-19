@@ -9,7 +9,7 @@ import { backgroundImageSlice } from '~/store/AppContext/backgroundImage';
 
 export default function Footer() {
     const navigation = useNavigation<HomeScreenNavigationProp>();
-    const Dispatch = useAppDispatch();
+    const DispatchReducer = useAppDispatch();
     const [currentSelected, setCurrentSelected] = useState<number>(1);
 
     const stylesNavigation = (screen: keyof StackNavigatorParamList, index: number) => {
@@ -31,7 +31,7 @@ export default function Footer() {
                 switch (state.routes[state.index].name) {
                     case 'Setup':
                         setCurrentSelected(0);
-                        Dispatch(backgroundImageSlice.actions.setDefaultBackground())
+                        DispatchReducer(backgroundImageSlice.actions.setBlackBackground());
                         break;
                     case 'Home':
                         setCurrentSelected(1);
